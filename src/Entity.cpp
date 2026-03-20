@@ -2,15 +2,13 @@
 
 
 Entity::Entity(Type type)
-    :m_type{type}
+    : m_type{type}
+    , m_sprite(m_texturebuffers[type])
+    , m_sound(m_soundbuffers[type])
+     
 {
     m_id = m_id_counter++;
-
-    m_sound.setBuffer(m_soundbuffers[m_type]);
-    m_sprite.setTexture(m_texturebuffers[m_type]);
-    
     m_sprite.setScale(sf::Vector2f(0.2, 0.2));
-
     table.push_back({m_type, m_sprite.getGlobalBounds()});
 }
 
@@ -34,7 +32,7 @@ void Entity::update()
 
 void Entity::setPos(float x, float y)
 {
-    m_sprite.setPosition(x, y);
+    m_sprite.setPosition({x, y});
 }
 
 void Entity::setPos(Vec2f pos)
@@ -51,7 +49,7 @@ void Entity::update_table()
 
 bool Entity::collide(const sf::FloatRect& rect) const
 {
-    return m_sprite.getGlobalBounds().intersects(rect);
+    return m_sprite.getGlobalBounds().findIntersection(rect).has_value();
 }
 
 
@@ -59,17 +57,17 @@ void Entity::collisions_with_walls(char direct)
 {   
     if (direct == 'w')
     {
-        if (m_pos.x + m_sprite.getGlobalBounds().width > g_window_rect.width)
-            m_pos.x = g_window_rect.width - m_sprite.getGlobalBounds().width;
-        if (m_pos.x < g_window_rect.left)
-            m_pos.x = g_window_rect.left;
+        if (m_pos.x + m_sprite.getGlobalBounds().size.x > g_window_rect.size.x)
+            m_pos.x = g_window_rect.size.x - m_sprite.getGlobalBounds().size.x;
+        if (m_pos.x < g_window_rect.position.x)
+            m_pos.x = g_window_rect.position.x;
     }
     if(direct == 'h')
     {    
-        if (m_pos.y + m_sprite.getGlobalBounds().height > g_window_rect.height)
-            m_pos.y = g_window_rect.height - m_sprite.getGlobalBounds().height;
-        if (m_pos.y < g_window_rect.top)
-            m_pos.y = g_window_rect.top;
+        if (m_pos.y + m_sprite.getGlobalBounds().size.y > g_window_rect.size.y)
+            m_pos.y = g_window_rect.size.y - m_sprite.getGlobalBounds().size.y;
+        if (m_pos.y < g_window_rect.position.y)
+            m_pos.y = g_window_rect.position.y;
     }    
 }
 
@@ -128,7 +126,7 @@ Vec2f Entity::get_direction(bool hunter_flag)
     {
         float distance;
         Vec2f direction;
-        Vec2f victim_pos(entity.rect.left, entity.rect.top);
+        Vec2f victim_pos(entity.rect.position.x, entity.rect.position.y);
         distance = (victim_pos - Vec2f(m_sprite.getPosition())).magnitude();
         if(distance > 0)
             direction = (victim_pos - Vec2f(m_sprite.getPosition())).normalize();

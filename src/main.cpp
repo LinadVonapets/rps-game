@@ -1,35 +1,34 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+
 #include "Vec2f.hpp"
 #include "Entity.hpp"
 #include "EntityGroupSystem.hpp"
 
-const sf::FloatRect g_window_rect(0,0,800,600);
+const sf::FloatRect g_window_rect({0, 0}, {800, 600});
 
 int main()
-{   
-
-    sf::RenderWindow win(sf::VideoMode(g_window_rect.width,g_window_rect.height), "rps_life", sf::Style::Fullscreen);
-    sf::Event event;
-    win.setVerticalSyncEnabled(true);
+{
+    sf::RenderWindow window(sf::VideoMode(sf::Vector2u(g_window_rect.size)), "rps_life");
+    window.setVerticalSyncEnabled(true);
     
     Entity::loadMedia();
     
     EntityGroupSystem EGS(20, 20, 20, {100, 300}, {350, 100}, {700, 400}, 250);
 
-    while(win.isOpen())
+    while(window.isOpen())
     {
-        while(win.pollEvent(event))
+        while(const std::optional event = window.pollEvent())
         {
-            if (event.type == sf::Event::Closed)
-                win.close();
+            if (event->is<sf::Event::Closed>())
+                window.close();
         }
-        win.clear(sf::Color::White);
+        window.clear(sf::Color::White);
 
         EGS.update();
-        win.draw(EGS);
+        window.draw(EGS);
         
-        win.display();
+        window.display();
     }
     
 }
