@@ -28,7 +28,8 @@ add_executable(${PROJECT_NAME} ${rps_life_game_src})
 
 target_link_libraries(
     ${PROJECT_NAME}
-    SFML::Graphics 
+    PRIVATE
+    SFML::Graphics
     SFML::Audio
     SFML::System
     SFML::Window
