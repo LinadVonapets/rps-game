@@ -2,7 +2,7 @@
 
 
 EntityGroupSystem::EntityGroupSystem(int amount_rocks, int amount_papers, int amount_scisissors, 
-                                    Vec2f rocks_pos, Vec2f papers_pos, Vec2f scissors_pos, 
+                                    sf::Vector2f rocks_pos, sf::Vector2f papers_pos, sf::Vector2f scissors_pos, 
                                     float group_radius)
     :m_random_engine{m_dev()} // initialize random engine
 {
@@ -12,7 +12,7 @@ EntityGroupSystem::EntityGroupSystem(int amount_rocks, int amount_papers, int am
 }
 
 
-void EntityGroupSystem::spawn_group(Entity::Type type, int amount, Vec2f pos, float radius)
+void EntityGroupSystem::spawn_group(Entity::Type type, int amount, sf::Vector2f pos, float radius)
 {
     for(int i = 0; i < amount; ++i)
     {
@@ -23,7 +23,7 @@ void EntityGroupSystem::spawn_group(Entity::Type type, int amount, Vec2f pos, fl
 }
 
 
-Vec2f EntityGroupSystem::randomize_coord(float x, float y, float R_max)
+sf::Vector2f EntityGroupSystem::randomize_coord(float x, float y, float R_max)
 {
     double angle = get_random(0.f, std::acos(-1)); // acos(-1) used here to generate PI constant with double precision
     int radius = get_random(0, R_max);

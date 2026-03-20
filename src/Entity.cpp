@@ -35,7 +35,7 @@ void Entity::setPos(float x, float y)
     m_sprite.setPosition({x, y});
 }
 
-void Entity::setPos(Vec2f pos)
+void Entity::setPos(sf::Vector2f pos)
 {
     m_sprite.setPosition(pos);
 }
@@ -75,8 +75,8 @@ void Entity::collisions_with_walls(char direct)
 void Entity::move()
 {
     m_pos = m_sprite.getPosition();
-    if (m_direction.magnitude() != 0)
-        m_direction = m_direction.normalize();
+    if (m_direction.length() != 0)
+        m_direction = m_direction.normalized();
     
     m_pos.x += m_direction.x * m_speed;
     collisions_with_walls('w');
@@ -118,18 +118,18 @@ void Entity::update_direction()
 }
 
 
-Vec2f Entity::get_direction(bool hunter_flag)
+sf::Vector2f Entity::get_direction(bool hunter_flag)
 {
     std::vector<float> distances;
-    std::vector<Vec2f> directions;
+    std::vector<sf::Vector2f> directions;
     for(const auto& entity: table)
     {
         float distance;
-        Vec2f direction;
-        Vec2f victim_pos(entity.rect.position.x, entity.rect.position.y);
-        distance = (victim_pos - Vec2f(m_sprite.getPosition())).magnitude();
+        sf::Vector2f direction;
+        sf::Vector2f victim_pos(entity.rect.position.x, entity.rect.position.y);
+        distance = (victim_pos - sf::Vector2f(m_sprite.getPosition())).length();
         if(distance > 0)
-            direction = (victim_pos - Vec2f(m_sprite.getPosition())).normalize();
+            direction = (victim_pos - sf::Vector2f(m_sprite.getPosition())).normalized();
         else
             direction = {0,0};
         

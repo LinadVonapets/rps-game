@@ -1,7 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
-#include "Vec2f.hpp"
 #include "Entity.hpp"
 #include "EntityGroupSystem.hpp"
 

@@ -6,7 +6,6 @@
 #include <random>
 
 #include "Entity.hpp"
-#include "Vec2f.hpp"
 
 class EntityGroupSystem: public sf::Drawable
 {
@@ -19,10 +18,10 @@ private:
 
 public:
     EntityGroupSystem(int amount_rocks, int amount_papers, int amount_scisissors, 
-                      Vec2f rocks_pos, Vec2f papers_pos, Vec2f scissors_pos, 
+                      sf::Vector2f rocks_pos, sf::Vector2f papers_pos, sf::Vector2f scissors_pos, 
                       float group_radius);
-    void spawn_group(Entity::Type type, int amount, Vec2f pos, float radius);
-    Vec2f randomize_coord(float x, float y, float R_max);
+    void spawn_group(Entity::Type type, int amount, sf::Vector2f pos, float radius);
+    sf::Vector2f randomize_coord(float x, float y, float R_max);
     double get_random(double begin, double end);
     void update();
 

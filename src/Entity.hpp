@@ -3,7 +3,6 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include "Vec2f.hpp"
 #include <iostream>
 #include <vector>
 #include <array>
@@ -43,27 +42,27 @@ private:
 
     int m_id;
 
-    Vec2f m_direction;
+    sf::Vector2f m_direction;
     Type m_type;
-    Vec2f m_pos;
+    sf::Vector2f m_pos;
     
 public:
     Entity(Type type);
     Entity(const Entity& value);
     void update();
     void setPos(float x, float y);
-    void setPos(Vec2f pos);  
+    void setPos(sf::Vector2f pos);  
     static void loadMedia();
     
 private:
-    Vec2f get_mate_direction();
+    sf::Vector2f get_mate_direction();
     void update_table();
     bool collide(const sf::FloatRect& rect) const;
     void collisions_with_walls(char direct);    
     void move();
     void check_captured();
     void update_direction();
-    Vec2f get_direction(bool hunter_flag);
+    sf::Vector2f get_direction(bool hunter_flag);
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 
