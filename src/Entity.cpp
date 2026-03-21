@@ -136,8 +136,7 @@ sf::Vector2f Entity::get_direction(bool hunter_flag)
 
 	if (!distances.empty() && !directions.empty())
 	{
-		float min_dinstance = *std::min_element(distances.begin(), distances.end());
-		std::vector<float>::iterator it = std::find(distances.begin(), distances.end(), min_dinstance);
+		std::vector<float>::iterator it = std::min_element(distances.begin(), distances.end());
 		int index = std::distance(distances.begin(), it);
 		return directions[index];
 	}
