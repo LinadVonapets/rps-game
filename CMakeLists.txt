@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.10.0)
 project(rps_life_game VERSION 0.1.0)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -13,7 +13,12 @@ add_custom_target(copy_assets
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_LIST_DIR}/copy-assets.cmake
 )
 
+add_subdirectory(imgui-sfml)
+
 file(GLOB rps_life_game_src "src/*.cpp" )
+
 add_executable(rps_life_game ${rps_life_game_src})
-target_link_libraries(rps_life_game sfml-graphics sfml-audio sfml-system sfml-window sfml-network) 
+target_link_libraries(rps_life_game sfml-graphics sfml-audio sfml-system sfml-window sfml-network imgui-sfml)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/imgui-sfml/include) 
+
 add_dependencies(rps_life_game copy_assets)
