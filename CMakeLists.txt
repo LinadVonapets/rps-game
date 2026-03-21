@@ -33,9 +33,14 @@ add_custom_target(copy_assets
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_LIST_DIR}/copy-assets.cmake
 )
 
-file(GLOB rps_life_game_src "src/*.cpp")
+# file(GLOB rps_life_game_src "src/*.cpp")
 
-add_executable(${PROJECT_NAME} ${rps_life_game_src})
+add_executable(${PROJECT_NAME} 
+	src/main.cpp
+	src/Entity.cpp
+	src/EntityGroupSystem.cpp
+	src/Core.cpp
+)
 
 target_link_libraries(
     ${PROJECT_NAME}

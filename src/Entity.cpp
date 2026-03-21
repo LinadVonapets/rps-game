@@ -1,5 +1,5 @@
 #include "Entity.hpp"
-
+#include "Core.hpp"
 
 Entity::Entity(Type type)
     : m_type{type}
@@ -54,20 +54,21 @@ bool Entity::collide(const sf::FloatRect& rect) const
 
 
 void Entity::collisions_with_walls(char direct)
-{   
+{
+
     if (direct == 'w')
     {
-        if (m_pos.x + m_sprite.getGlobalBounds().size.x > g_window_rect.size.x)
-            m_pos.x = g_window_rect.size.x - m_sprite.getGlobalBounds().size.x;
-        if (m_pos.x < g_window_rect.position.x)
-            m_pos.x = g_window_rect.position.x;
+        if (m_pos.x + m_sprite.getGlobalBounds().size.x > Core::get_instance().get_window_rect().size.x)
+            m_pos.x = Core::get_instance().get_window_rect().size.x - m_sprite.getGlobalBounds().size.x;
+        if (m_pos.x < Core::get_instance().get_window_rect().position.x)
+            m_pos.x = Core::get_instance().get_window_rect().position.x;
     }
     if(direct == 'h')
     {    
-        if (m_pos.y + m_sprite.getGlobalBounds().size.y > g_window_rect.size.y)
-            m_pos.y = g_window_rect.size.y - m_sprite.getGlobalBounds().size.y;
-        if (m_pos.y < g_window_rect.position.y)
-            m_pos.y = g_window_rect.position.y;
+        if (m_pos.y + m_sprite.getGlobalBounds().size.y > Core::get_instance().get_window_rect().size.y)
+            m_pos.y = Core::get_instance().get_window_rect().size.y - m_sprite.getGlobalBounds().size.y;
+        if (m_pos.y < Core::get_instance().get_window_rect().position.y)
+            m_pos.y = Core::get_instance().get_window_rect().position.y;
     }    
 }
 
@@ -108,7 +109,6 @@ void Entity::check_captured()
         }
 
     }
-    
 }
 
 
