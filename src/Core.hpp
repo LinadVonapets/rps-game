@@ -25,9 +25,7 @@ public:
 	virtual ~Core() = default;
 
 	void run();
-	sf::Rect<std::uint32_t> get_window_rect() {
-		return window_rect;
-	}
+	const sf::Rect<std::uint32_t>& get_window_rect();
 
 private:
 	Core(const Core&) = delete;

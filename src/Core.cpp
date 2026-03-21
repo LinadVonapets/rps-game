@@ -64,3 +64,8 @@ void Core::run()
 		window.display();
 	}
 }
+
+const sf::Rect<std::uint32_t>& Core::get_window_rect() 
+{
+	return this->window_rect;
+}
