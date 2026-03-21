@@ -16,6 +16,7 @@ private:
 	sf::String window_title;
 	sf::Rect<std::uint32_t> window_rect;
 	sf::RenderWindow window;
+//////////////////////////////////////////////////////////////////
 
 	Entity::Type spawn_type;
 
