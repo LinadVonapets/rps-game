@@ -15,7 +15,32 @@ FetchContent_Declare(
    EXCLUDE_FROM_ALL
    SYSTEM
 )
+
+FetchContent_Declare(
+	imgui
+	GIT_REPOSITORY https://github.com/ocornut/imgui.git
+	GIT_TAG v1.91.9
+	GIT_SHALLOW ON
+	EXCLUDE_FROM_ALL
+	SYSTEM
+)
+
+FetchContent_Declare(
+	imgui-sfml
+	GIT_REPOSITORY https://github.com/SFML/imgui-sfml.git
+	GIT_TAG v3.0
+	GIT_SHALLOW ON 
+	EXCLUDE_FROM_ALL
+	SYSTEM
+)
+
 FetchContent_MakeAvailable(SFML)
+FetchContent_MakeAvailable(imgui)
+
+set(IMGUI_DIR ${imgui_SOURCE_DIR})
+set(IMGUI_SFML_FIND_SFML OFF CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(imgui-sfml)
+
 
 add_custom_target(copy_assets
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_LIST_DIR}/copy-assets.cmake
@@ -36,6 +61,7 @@ target_link_libraries(
     SFML::System
     SFML::Window
     SFML::Network
+	ImGui-SFML::ImGui-SFML
 ) 
 
 add_dependencies(${PROJECT_NAME} copy_assets)
