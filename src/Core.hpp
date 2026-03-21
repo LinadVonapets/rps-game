@@ -4,6 +4,8 @@
 #include <memory>
 #include <SFML/Graphics.hpp>
 
+#include "Entity.hpp"
+
 class Core 
 {
 private:
@@ -13,6 +15,8 @@ private:
 // in member initializer list exactly in the order they are declared here
 	sf::Rect<std::uint32_t> window_rect;
 	sf::RenderWindow window;
+
+	Entity::Type spawn_type;
 
 public:
 	static Core& get_instance();
