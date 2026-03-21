@@ -3,7 +3,8 @@
 #include "Entity.hpp"
 #include "EntityGroupSystem.hpp"
 
-Core& Core::get_instance() {
+Core& Core::get_instance() 
+{
 	if (!instance) {
 		instance = new Core();
 	}
@@ -19,7 +20,9 @@ Core::Core()
 	window.setVerticalSyncEnabled(true);
 }
 
-void Core::run() {
+
+void Core::run() 
+{
 	EntityGroupSystem EGS(20, 20, 20, {100, 300}, {350, 100}, {700, 400}, 250);
 
 	while(window.isOpen()) {

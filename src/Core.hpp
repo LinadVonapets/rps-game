@@ -4,7 +4,8 @@
 #include <memory>
 #include <SFML/Graphics.hpp>
 
-class Core {
+class Core 
+{
 private:
 	static inline Core* instance = nullptr;
 	
