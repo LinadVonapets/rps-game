@@ -39,4 +39,14 @@ target_link_libraries(
     SFML::Network
 ) 
 
+if(WIN32)
+	target_link_options(
+		${PROJECT_NAME}
+		PRIVATE
+		-static
+		-static-libgcc
+		-static-libstdc++
+	)
+endif()
+
 add_dependencies(${PROJECT_NAME} copy_assets)
