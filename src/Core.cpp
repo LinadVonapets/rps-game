@@ -3,6 +3,9 @@
 #include "Entity.hpp"
 #include "EntityGroupSystem.hpp"
 
+#include <imgui.h>
+#include <imgui-SFML.h>
+
 Core& Core::get_instance() 
 {
 	if (!instance) {
@@ -18,17 +21,26 @@ Core::Core()
 	window(sf::VideoMode(window_rect.size), window_title)
 
 {
+	if(!ImGui::SFML::Init(this->window)) {
+		std::string msg = "ImGui init failed! Exiting...";
+		std::cerr << msg << std::endl;
+		throw std::runtime_error(msg);
+	}
 	Entity::loadMedia();
 	window.setVerticalSyncEnabled(true);
 	spawn_type = Entity::ROCK;
+	
 }
 
 void Core::run()
 {
 	EntityGroupSystem EGS(20, 20, 20, {100, 300}, {350, 100}, {700, 400}, 250);
 
+	sf::Clock delta_clock;
+
 	while(window.isOpen()) {
 		while(const std::optional event = window.pollEvent()) {
+			ImGui::SFML::ProcessEvent(this->window, *event);
 			if (event->is<sf::Event::Closed>()) {
 				window.close();
 
@@ -55,12 +67,16 @@ void Core::run()
 				}
 			}
 		}
+		ImGui::SFML::Update(this->window, delta_clock.restart());
+
+		ImGui::ShowDemoWindow();
 
 		window.clear(sf::Color::White);
 
 		EGS.update();
 		window.draw(EGS);
 
+		ImGui::SFML::Render(this->window);
 		window.display();
 	}
 }
