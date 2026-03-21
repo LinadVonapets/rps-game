@@ -13,16 +13,17 @@ Core& Core::get_instance()
 
 Core::Core() 
 	: 
+	window_title{"rps_life"},
 	window_rect({0, 0}, {800, 600}),
-	window(sf::VideoMode(window_rect.size), "rps_life")
+	window(sf::VideoMode(window_rect.size), window_title)
+
 {
 	Entity::loadMedia();
 	window.setVerticalSyncEnabled(true);
 	spawn_type = Entity::ROCK;
 }
 
-
-void Core::run() 
+void Core::run()
 {
 	EntityGroupSystem EGS(20, 20, 20, {100, 300}, {350, 100}, {700, 400}, 250);
 
@@ -35,18 +36,17 @@ void Core::run()
 				switch(KeyPressed->scancode) {
 					case sf::Keyboard::Scancode::R: {
 						spawn_type = Entity::ROCK;
-						std::cout << "Selected: \"Rock\"" << std::endl;
+						message_to_all_output("Selected: Rock");
 					}
 					break;
 					case sf::Keyboard::Scancode::P: {
 						spawn_type = Entity::PAPER;
-						std::cout << "Selected: \"Paper\"" << std::endl;
+						message_to_all_output("Selected: Paper");
 					}
 					break;
 					case sf::Keyboard::Scancode::S: {
 						spawn_type = Entity::SCISSORS;
-						
-						std::cout << "Selected: \"Scissors\"" << std::endl;
+						message_to_all_output("Selected: Scissors");
 					}
 				}
 			} else if (const auto* MouseKey = event->getIf<sf::Event::MouseButtonPressed>()) {
@@ -69,3 +69,19 @@ const sf::Rect<std::uint32_t>& Core::get_window_rect()
 {
 	return this->window_rect;
 }
+
+void Core::message_to_title(sf::String msg)
+{
+	this->window.setTitle(this->window_title + ": [" + msg + "]");
+}
+
+void Core::message_to_stdout(sf::String msg)
+{
+	std::cout << msg.toAnsiString() << std::endl;
+}
+
+void Core::message_to_all_output(sf::String msg)
+{
+	this->message_to_title(msg);
+	this->message_to_stdout(msg);
+};
