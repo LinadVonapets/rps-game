@@ -1,5 +1,5 @@
-#ifndef __ENTITY_GROUP_SYSTEM_RPS_GAME
-#define __ENTITY_GROUP_SYSTEM_RPS_GAME
+#ifndef __RPS_ENTITY_GROUP_SYSTEM_HPP
+#define __RPS_ENTITY_GROUP_SYSTEM_HPP
 
 #include <SFML/Graphics.hpp>
 #include <cstdint>

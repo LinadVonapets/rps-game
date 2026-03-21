@@ -1,5 +1,5 @@
-#ifndef __ENTITY_RPS_GAME
-#define __ENTITY_RPS_GAME
+#ifndef __RPS_ENTITY_HPP
+#define __RPS_ENTITY_HPP
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
