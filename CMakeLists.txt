@@ -12,6 +12,7 @@ FetchContent_Declare(
    GIT_REPOSITORY https://github.com/SFML/SFML.git
    GIT_TAG 3.0.2
    GIT_SHALLOW ON
+   GIT_PROGRESS TRUE
    EXCLUDE_FROM_ALL
    SYSTEM
 )
