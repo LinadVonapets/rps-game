@@ -8,12 +8,13 @@ set(CMAKE_CXX_EXTENSIONS off)
 include(FetchContent)
 
 FetchContent_Declare(
-   SFML
-   GIT_REPOSITORY https://github.com/SFML/SFML.git
-   GIT_TAG 3.0.2
-   GIT_SHALLOW ON
-   EXCLUDE_FROM_ALL
-   SYSTEM
+	SFML
+  	GIT_REPOSITORY https://github.com/SFML/SFML.git
+  	GIT_TAG 3.0.2
+  	GIT_SHALLOW ON
+  	GIT_PROGRESS TRUE
+  	EXCLUDE_FROM_ALL
+  	SYSTEM
 )
 
 FetchContent_Declare(
@@ -21,6 +22,7 @@ FetchContent_Declare(
 	GIT_REPOSITORY https://github.com/ocornut/imgui.git
 	GIT_TAG v1.91.9
 	GIT_SHALLOW ON
+	GIT_PROGRESS TRUE
 	EXCLUDE_FROM_ALL
 	SYSTEM
 )
@@ -30,6 +32,7 @@ FetchContent_Declare(
 	GIT_REPOSITORY https://github.com/SFML/imgui-sfml.git
 	GIT_TAG v3.0
 	GIT_SHALLOW ON 
+	GIT_PROGRESS TRUE
 	EXCLUDE_FROM_ALL
 	SYSTEM
 )
