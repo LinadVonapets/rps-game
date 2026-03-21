@@ -5,35 +5,21 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
 set(CMAKE_CXX_EXTENSIONS off)
 
-# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+include(FetchContent)
 
-#set(SFML_STATIC_LIBRARIES ON)
-find_package(
-	SFML 3.0.2 
-	COMPONENTS 
-	Graphics 
-	Audio 
-	System 
-	Window
-	Network
-	REQUIRED
+FetchContent_Declare(
+   SFML
+   GIT_REPOSITORY https://github.com/SFML/SFML.git
+   GIT_TAG 3.0.2
+   GIT_SHALLOW ON
+   EXCLUDE_FROM_ALL
+   SYSTEM
 )
-#include(FetchContent)
-#FetchContent_Declare(
-#    SFML
-#    GIT_REPOSITORY https://github.com/SFML/SFML.git
-#    GIT_TAG 3.0.2
-#    GIT_SHALLOW ON
-#    EXCLUDE_FROM_ALL
-#    SYSTEM
-#)
-#FetchContent_MakeAvailable(SFML)
+FetchContent_MakeAvailable(SFML)
 
 add_custom_target(copy_assets
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_LIST_DIR}/copy-assets.cmake
 )
-
-# file(GLOB rps_life_game_src "src/*.cpp")
 
 add_executable(${PROJECT_NAME} 
 	src/main.cpp
@@ -44,7 +30,7 @@ add_executable(${PROJECT_NAME}
 
 target_link_libraries(
     ${PROJECT_NAME}
-    PRIVATE
+    PUBLIC
     SFML::Graphics
     SFML::Audio
     SFML::System
