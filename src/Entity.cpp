@@ -11,14 +11,12 @@ Entity::Entity(Type type)
 	table.push_back({m_type, m_sprite.getGlobalBounds()});
 }
 
-
 Entity::Entity(const Entity& value)
 	:m_type{value.m_type}, m_direction{value.m_direction}, m_id{value.m_id}, 
 	m_sprite(value.m_sprite), m_sound{value.m_sound}
 {
 	update_table();
 }
-
 
 void Entity::update()
 {
@@ -28,18 +26,15 @@ void Entity::update()
 	update_table();
 }
 
-
 void Entity::setPos(float x, float y)
 {
 	m_sprite.setPosition({x, y});
 }
 
-
 void Entity::setPos(sf::Vector2f pos)
 {
 	m_sprite.setPosition(pos);
 }
-
 
 // inefficiant method, need to find another solution 
 void Entity::update_table()
@@ -47,31 +42,29 @@ void Entity::update_table()
 	table[m_id] = {m_type, m_sprite.getGlobalBounds()};
 }
 
-
 bool Entity::collide(const sf::FloatRect& rect) const
 {
 	return m_sprite.getGlobalBounds().findIntersection(rect).has_value();
 }
 
-
 void Entity::collisions_with_walls(char direct)
 {
+	sf::Rect<std::uint32_t> win_rect = Core::get_instance().get_window_rect();
 	if (direct == 'w')
 	{
-		if (m_pos.x + m_sprite.getGlobalBounds().size.x > Core::get_instance().get_window_rect().size.x)
-			m_pos.x = Core::get_instance().get_window_rect().size.x - m_sprite.getGlobalBounds().size.x;
-		if (m_pos.x < Core::get_instance().get_window_rect().position.x)
-			m_pos.x = Core::get_instance().get_window_rect().position.x;
+		if (m_pos.x + m_sprite.getGlobalBounds().size.x > win_rect.size.x)
+			m_pos.x = win_rect.size.x - m_sprite.getGlobalBounds().size.x;
+		if (m_pos.x < win_rect.position.x)
+			m_pos.x = win_rect.position.x;
 	}
 	if(direct == 'h')
 	{
-		if (m_pos.y + m_sprite.getGlobalBounds().size.y > Core::get_instance().get_window_rect().size.y)
-			m_pos.y = Core::get_instance().get_window_rect().size.y - m_sprite.getGlobalBounds().size.y;
-		if (m_pos.y < Core::get_instance().get_window_rect().position.y)
-			m_pos.y = Core::get_instance().get_window_rect().position.y;
+		if (m_pos.y + m_sprite.getGlobalBounds().size.y > win_rect.size.y)
+			m_pos.y = win_rect.size.y - m_sprite.getGlobalBounds().size.y;
+		if (m_pos.y < win_rect.position.y)
+			m_pos.y = win_rect.position.y;
 	}
 }
-
 
 void Entity::move()
 {
@@ -85,7 +78,6 @@ void Entity::move()
 	collisions_with_walls('h');
 	m_sprite.setPosition(m_pos);
 }
-
 
 void Entity::check_captured()
 {
@@ -109,12 +101,10 @@ void Entity::check_captured()
 	}
 }
 
-
 void Entity::update_direction()
 {
 	m_direction = get_direction(false) - get_direction(true);
 }
-
 
 sf::Vector2f Entity::get_direction(bool hunter_flag)
 {
@@ -153,7 +143,6 @@ sf::Vector2f Entity::get_direction(bool hunter_flag)
 	}
 	return {0,0};
 }
-
 
 void Entity::loadMedia()
 {

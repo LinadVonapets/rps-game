@@ -11,7 +11,6 @@ EntityGroupSystem::EntityGroupSystem(int amount_rocks, int amount_papers, int am
 	spawn_group(Entity::ROCK, amount_rocks, rocks_pos, group_radius);
 }
 
-
 void EntityGroupSystem::spawn_group(Entity::Type type, int amount, sf::Vector2f pos, float radius)
 {
 	for(int i = 0; i < amount; ++i) {
@@ -20,7 +19,6 @@ void EntityGroupSystem::spawn_group(Entity::Type type, int amount, sf::Vector2f 
 		m_entities.push_back(temp);
 	}
 }
-
 
 sf::Vector2f EntityGroupSystem::randomize_coord(float x, float y, float R_max)
 {
@@ -32,20 +30,17 @@ sf::Vector2f EntityGroupSystem::randomize_coord(float x, float y, float R_max)
 	return {x_offseted, y_offseted};
 }
 
-
 double EntityGroupSystem::get_random(double begin, double end)
 {
 	std::uniform_real_distribution<> dist(begin, end);
 	return dist(m_random_engine);
 }
 
-
 void EntityGroupSystem::update()
 {
 	for(Entity& entity: m_entities)
 		entity.update();
 }
-
 
 void EntityGroupSystem::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
