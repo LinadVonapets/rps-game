@@ -43,6 +43,9 @@ public:
 	void message_to_all_output(sf::String msg);
 
 private:
+
+	void process_events(const std::optional<sf::Event> event);
+
 	Core(const Core&) = delete;
 	Core& operator=(const Core&) = delete;
 };

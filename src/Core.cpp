@@ -36,43 +36,8 @@ void Core::run()
 	{
 		this->delta_time = this->delta_clock.restart();
 		while(const std::optional event = window.pollEvent())
-		{
-			user_interface.process_events(event);
-			if (event->is<sf::Event::Closed>())
-			{
-				this->window.close();
-			}
-			else if (const auto* KeyPressed = event->getIf<sf::Event::KeyPressed>())
-			{
-				switch(KeyPressed->scancode)
-				{
-					case sf::Keyboard::Scancode::R:
-					{
-						this->spawn_type = Entity::ROCK;
-						message_to_all_output("Selected: Rock");
-					}
-					break;
-					case sf::Keyboard::Scancode::P:
-					{
-						this->spawn_type = Entity::PAPER;
-						message_to_all_output("Selected: Paper");
-					}
-					break;
-					case sf::Keyboard::Scancode::S:
-					{
-						this->spawn_type = Entity::SCISSORS;
-						message_to_all_output("Selected: Scissors");
-					}
-				}
-			}
-			else if (const auto* MouseKey = event->getIf<sf::Event::MouseButtonPressed>())
-			{
-				if (MouseKey->button == sf::Mouse::Button::Left) 
-				{
-					entity_group_system.spawn_group(spawn_type, 1, sf::Vector2f(MouseKey->position), 0);
-				}
-			}
-		}
+			this->process_events(event);
+
 		user_interface.update(this->delta_time);
 		entity_group_system.update(this->delta_time);
 
@@ -105,3 +70,42 @@ void Core::message_to_all_output(sf::String msg)
 	this->message_to_title(msg);
 	this->message_to_stdout(msg);
 };
+
+void Core::process_events(const std::optional<sf::Event> event)
+{
+	user_interface.process_events(event);
+	if (event->is<sf::Event::Closed>())
+	{
+		this->window.close();
+	}
+	else if (const auto* KeyPressed = event->getIf<sf::Event::KeyPressed>())
+	{
+		switch(KeyPressed->scancode)
+		{
+			case sf::Keyboard::Scancode::R:
+			{
+				this->spawn_type = Entity::ROCK;
+				message_to_all_output("Selected: Rock");
+			}
+			break;
+			case sf::Keyboard::Scancode::P:
+			{
+				this->spawn_type = Entity::PAPER;
+				message_to_all_output("Selected: Paper");
+			}
+			break;
+			case sf::Keyboard::Scancode::S:
+			{
+				this->spawn_type = Entity::SCISSORS;
+				message_to_all_output("Selected: Scissors");
+			}
+		}
+	}
+	else if (const auto* MouseKey = event->getIf<sf::Event::MouseButtonPressed>())
+	{
+		if (MouseKey->button == sf::Mouse::Button::Left) 
+		{
+			entity_group_system.spawn_group(spawn_type, 1, sf::Vector2f(MouseKey->position), 0);
+		}
+	}
+}
