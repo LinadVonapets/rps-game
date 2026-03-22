@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Entity.hpp"
+#include "GUI.hpp"
 
 class Core 
 {
@@ -17,6 +18,7 @@ private:
 	sf::String window_title;
 	sf::Rect<std::uint32_t> window_rect;
 	sf::RenderWindow window;
+	GUI user_interface;
 	//////////////////////////////////////////////////////////////////
 
 	Entity::Type spawn_type;

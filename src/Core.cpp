@@ -18,13 +18,9 @@ Core::Core()
 	: 
 	window_title{"rps_life"},
 	window_rect({0, 0}, {800, 600}),
-	window(sf::VideoMode(window_rect.size), window_title)
+	window(sf::VideoMode(window_rect.size), window_title),
+	user_interface(window)
 {
-	if(!ImGui::SFML::Init(this->window)) {
-		std::string msg = "ImGui init failed! Exiting...";
-		std::cerr << msg << std::endl;
-		throw std::runtime_error(msg);
-	}
 	Entity::loadMedia();
 	this->window.setVerticalSyncEnabled(true);
 	this->spawn_type = Entity::ROCK;
@@ -40,7 +36,7 @@ void Core::run()
 		this->delta_time = this->delta_clock.restart();
 		while(const std::optional event = window.pollEvent())
 		{
-			ImGui::SFML::ProcessEvent(this->window, *event);
+			user_interface.process_events(event);
 			if (event->is<sf::Event::Closed>())
 			{
 				this->window.close();
@@ -76,16 +72,14 @@ void Core::run()
 				}
 			}
 		}
-		ImGui::SFML::Update(this->window, this->delta_time);
-
-		ImGui::ShowDemoWindow();
+		user_interface.update(this->delta_time);
+		EGS.update(this->delta_time);
 
 		window.clear(sf::Color::White);
 
-		EGS.update(this->delta_time);
 		window.draw(EGS);
 
-		ImGui::SFML::Render(this->window);
+		user_interface.display();
 		this->window.display();
 	}
 }

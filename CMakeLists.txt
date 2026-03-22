@@ -54,6 +54,7 @@ add_executable(${PROJECT_NAME}
 	src/Entity.cpp
 	src/EntityGroupSystem.cpp
 	src/Core.cpp
+	src/GUI.cpp
 )
 
 target_link_libraries(
@@ -68,7 +69,7 @@ target_link_libraries(
 ) 
 
 if(WIN32)
-set(CMAKE_MAKE_PROGRAM=/mingw64/bin/mingw32-make)
+	set(CMAKE_MAKE_PROGRAM=/mingw64/bin/mingw32-make)
 	target_link_options(
 		${PROJECT_NAME}
 		PRIVATE
