@@ -2,6 +2,7 @@
 #define __RPS_CORE_HPP
 
 #include <memory>
+
 #include <SFML/Graphics.hpp>
 
 #include "Entity.hpp"
@@ -11,12 +12,12 @@ class Core
 private:
 	static inline Core* instance = nullptr;
 	
-// Do not change order of these fields, because we initialize them 
-// in member initializer list exactly in the order they are declared here
+	// Do not change order of these fields, because we initialize them 
+	// in member initializer list exactly in the order they are declared here
 	sf::String window_title;
 	sf::Rect<std::uint32_t> window_rect;
 	sf::RenderWindow window;
-//////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////
 
 	Entity::Type spawn_type;
 
