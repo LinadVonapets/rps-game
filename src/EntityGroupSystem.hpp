@@ -17,9 +17,7 @@ private:
 	std::mt19937 m_random_engine;
 
 public:
-	EntityGroupSystem(int amount_rocks, int amount_papers, int amount_scisissors, 
-					  sf::Vector2f rocks_pos, sf::Vector2f papers_pos, sf::Vector2f scissors_pos, 
-					  float group_radius);
+	EntityGroupSystem();
 	void spawn_group(Entity::Type type, int amount, sf::Vector2f pos, float radius);
 	sf::Vector2f randomize_coord(float x, float y, float R_max);
 	double get_random(double begin, double end);

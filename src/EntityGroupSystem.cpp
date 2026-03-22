@@ -1,14 +1,9 @@
 #include "EntityGroupSystem.hpp"
 
 
-EntityGroupSystem::EntityGroupSystem(int amount_rocks, int amount_papers, int amount_scisissors, 
-									 sf::Vector2f rocks_pos, sf::Vector2f papers_pos, sf::Vector2f scissors_pos, 
-									 float group_radius)
-	:m_random_engine{m_dev()} // initialize random engine
+EntityGroupSystem::EntityGroupSystem()
+	:m_random_engine{m_dev()}
 {
-	spawn_group(Entity::SCISSORS, amount_scisissors, scissors_pos, group_radius);
-	spawn_group(Entity::PAPER, amount_papers, papers_pos, group_radius);
-	spawn_group(Entity::ROCK, amount_rocks, rocks_pos, group_radius);
 }
 
 void EntityGroupSystem::spawn_group(Entity::Type type, int amount, sf::Vector2f pos, float radius)

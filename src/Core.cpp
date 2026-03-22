@@ -1,8 +1,5 @@
 #include "Core.hpp"
 
-#include "Entity.hpp"
-#include "EntityGroupSystem.hpp"
-
 #include <imgui.h>
 #include <imgui-SFML.h>
 
@@ -29,7 +26,11 @@ Core::Core()
 
 void Core::run()
 {
-	EntityGroupSystem EGS(20, 20, 20, {100, 300}, {350, 100}, {700, 400}, 250);
+	int group_radius = 250;
+
+	entity_group_system.spawn_group(Entity::SCISSORS, 20, {100, 300}, group_radius);
+	entity_group_system.spawn_group(Entity::PAPER, 20, {350, 100}, group_radius);
+	entity_group_system.spawn_group(Entity::ROCK, 20, {700, 400}, group_radius);
 
 	while(this->window.isOpen())
 	{
@@ -68,16 +69,16 @@ void Core::run()
 			{
 				if (MouseKey->button == sf::Mouse::Button::Left) 
 				{
-					EGS.spawn_group(spawn_type, 1, sf::Vector2f(MouseKey->position), 0);
+					entity_group_system.spawn_group(spawn_type, 1, sf::Vector2f(MouseKey->position), 0);
 				}
 			}
 		}
 		user_interface.update(this->delta_time);
-		EGS.update(this->delta_time);
+		entity_group_system.update(this->delta_time);
 
 		window.clear(sf::Color::White);
 
-		window.draw(EGS);
+		window.draw(entity_group_system);
 
 		user_interface.display();
 		this->window.display();

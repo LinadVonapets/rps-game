@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Entity.hpp"
+#include "EntityGroupSystem.hpp"
 #include "GUI.hpp"
 
 class Core 
@@ -20,6 +21,8 @@ private:
 	sf::RenderWindow window;
 	GUI user_interface;
 	//////////////////////////////////////////////////////////////////
+
+	EntityGroupSystem entity_group_system;
 
 	Entity::Type spawn_type;
 
