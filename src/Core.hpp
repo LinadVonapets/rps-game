@@ -21,6 +21,9 @@ private:
 
 	Entity::Type spawn_type;
 
+	sf::Clock delta_clock;
+	sf::Time delta_time;
+
 public:
 	static Core& get_instance();
 

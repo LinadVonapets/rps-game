@@ -28,7 +28,7 @@ Core::Core()
 	Entity::loadMedia();
 	this->window.setVerticalSyncEnabled(true);
 	this->spawn_type = Entity::ROCK;
-	
+	this->delta_time = sf::Time::Zero;
 }
 
 void Core::run()
@@ -37,6 +37,7 @@ void Core::run()
 
 	while(this->window.isOpen())
 	{
+		this->delta_time = this->delta_clock.restart();
 		while(const std::optional event = window.pollEvent())
 		{
 			ImGui::SFML::ProcessEvent(this->window, *event);
@@ -75,7 +76,7 @@ void Core::run()
 				}
 			}
 		}
-		ImGui::SFML::Update(this->window, delta_clock.restart());
+		ImGui::SFML::Update(this->window, this->delta_time);
 
 		ImGui::ShowDemoWindow();
 
@@ -85,7 +86,7 @@ void Core::run()
 		window.draw(EGS);
 
 		ImGui::SFML::Render(this->window);
-		window.display();
+		this->window.display();
 	}
 }
 
