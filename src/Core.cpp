@@ -80,32 +80,13 @@ void Core::process_events(const std::optional<sf::Event> event)
 	}
 	else if (const auto* KeyPressed = event->getIf<sf::Event::KeyPressed>())
 	{
-		switch(KeyPressed->scancode)
-		{
-			case sf::Keyboard::Scancode::R:
-			{
-				this->spawn_type = Entity::ROCK;
-				message_to_all_output("Selected: Rock");
-			}
-			break;
-			case sf::Keyboard::Scancode::P:
-			{
-				this->spawn_type = Entity::PAPER;
-				message_to_all_output("Selected: Paper");
-			}
-			break;
-			case sf::Keyboard::Scancode::S:
-			{
-				this->spawn_type = Entity::SCISSORS;
-				message_to_all_output("Selected: Scissors");
-			}
-		}
+		
 	}
 	else if (const auto* MouseKey = event->getIf<sf::Event::MouseButtonPressed>())
 	{
-		if (MouseKey->button == sf::Mouse::Button::Left) 
+		if ((MouseKey->button == sf::Mouse::Button::Left) && !user_interface.is_want_capture_mouse()) 
 		{
-			entity_group_system.spawn_group(spawn_type, 1, sf::Vector2f(MouseKey->position), 0);
+			entity_group_system.spawn_group(user_interface.get_entity_type(), 1, sf::Vector2f(MouseKey->position), 0);
 		}
 	}
 }
