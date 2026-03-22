@@ -9,12 +9,12 @@ include(FetchContent)
 
 FetchContent_Declare(
 	SFML
-  	GIT_REPOSITORY https://github.com/SFML/SFML.git
-  	GIT_TAG 3.0.2
-  	GIT_SHALLOW ON
-  	GIT_PROGRESS TRUE
-  	EXCLUDE_FROM_ALL
-  	SYSTEM
+	GIT_REPOSITORY https://github.com/SFML/SFML.git
+	GIT_TAG 3.0.2
+	GIT_SHALLOW ON
+	GIT_PROGRESS TRUE
+	EXCLUDE_FROM_ALL
+	SYSTEM
 )
 
 FetchContent_Declare(
@@ -46,7 +46,7 @@ FetchContent_MakeAvailable(imgui-sfml)
 
 
 add_custom_target(copy_assets
-    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_LIST_DIR}/copy-assets.cmake
+	COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_LIST_DIR}/copy-assets.cmake
 )
 
 add_executable(${PROJECT_NAME} 
@@ -57,14 +57,24 @@ add_executable(${PROJECT_NAME}
 )
 
 target_link_libraries(
-    ${PROJECT_NAME}
-    PUBLIC
-    SFML::Graphics
-    SFML::Audio
-    SFML::System
-    SFML::Window
-    SFML::Network
+	${PROJECT_NAME}
+	PUBLIC
+	SFML::Graphics
+	SFML::Audio
+	SFML::System
+	SFML::Window
+	SFML::Network
 	ImGui-SFML::ImGui-SFML
 ) 
+
+if(WIN32)
+	target_link_options(
+		${PROJECT_NAME}
+		PRIVATE
+		-static
+		-static-libgcc
+		-static-libstdc++
+	)
+endif()
 
 add_dependencies(${PROJECT_NAME} copy_assets)

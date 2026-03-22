@@ -1,4 +1,2 @@
-.vscode/
 build/
-buildw/
-toolchain/
+imgui.ini
