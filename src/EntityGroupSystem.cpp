@@ -36,10 +36,10 @@ double EntityGroupSystem::get_random(double begin, double end)
 	return dist(m_random_engine);
 }
 
-void EntityGroupSystem::update()
+void EntityGroupSystem::update(sf::Time dt)
 {
 	for(Entity& entity: m_entities)
-		entity.update();
+		entity.update(dt);
 }
 
 void EntityGroupSystem::draw(sf::RenderTarget& target, sf::RenderStates states) const

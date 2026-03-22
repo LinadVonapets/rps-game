@@ -27,7 +27,7 @@ public:
 	};
 
 private:
-	float m_speed = 0.5;
+	float m_speed = 80;
 	static inline std::vector<Entity::Pair> table{};
 	static inline int m_id_counter{0};
 
@@ -46,7 +46,7 @@ private:
 public:
 	Entity(Type type);
 	Entity(const Entity& value);
-	void update();
+	void update(sf::Time dt);
 	void setPos(float x, float y);
 	void setPos(sf::Vector2f pos);
 	static void loadMedia();
@@ -56,7 +56,7 @@ private:
 	void update_table();
 	bool collide(const sf::FloatRect& rect) const;
 	void collisions_with_walls(char direct);
-	void move();
+	void move(sf::Time dt);
 	void check_captured();
 	void update_direction();
 	sf::Vector2f get_direction(bool hunter_flag);

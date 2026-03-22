@@ -18,11 +18,11 @@ Entity::Entity(const Entity& value)
 	update_table();
 }
 
-void Entity::update()
+void Entity::update(sf::Time dt)
 {
 	update_direction();
 	check_captured();
-	move();
+	move(dt);
 	update_table();
 }
 
@@ -66,15 +66,15 @@ void Entity::collisions_with_walls(char direct)
 	}
 }
 
-void Entity::move()
+void Entity::move(sf::Time dt)
 {
 	m_pos = m_sprite.getPosition();
 	if (m_direction.length() != 0)
 		m_direction = m_direction.normalized();
 
-	m_pos.x += m_direction.x * m_speed;
+	m_pos.x += m_direction.x * m_speed * dt.asSeconds();
 	collisions_with_walls('w');
-	m_pos.y += m_direction.y * m_speed;
+	m_pos.y += m_direction.y * m_speed * dt.asSeconds();
 	collisions_with_walls('h');
 	m_sprite.setPosition(m_pos);
 }

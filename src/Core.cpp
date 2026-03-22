@@ -82,7 +82,7 @@ void Core::run()
 
 		window.clear(sf::Color::White);
 
-		EGS.update();
+		EGS.update(this->delta_time);
 		window.draw(EGS);
 
 		ImGui::SFML::Render(this->window);

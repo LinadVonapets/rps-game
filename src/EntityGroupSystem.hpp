@@ -23,7 +23,7 @@ public:
 	void spawn_group(Entity::Type type, int amount, sf::Vector2f pos, float radius);
 	sf::Vector2f randomize_coord(float x, float y, float R_max);
 	double get_random(double begin, double end);
-	void update();
+	void update(sf::Time dt);
 
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
