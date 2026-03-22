@@ -68,6 +68,7 @@ target_link_libraries(
 ) 
 
 if(WIN32)
+set(CMAKE_MAKE_PROGRAM=/mingw64/bin/mingw32-make)
 	target_link_options(
 		${PROJECT_NAME}
 		PRIVATE
