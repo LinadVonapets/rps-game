@@ -19,7 +19,7 @@ Core::Core()
 	user_interface(window)
 {
 	Entity::loadMedia();
-	this->window.setVerticalSyncEnabled(true);
+	// this->window.setVerticalSyncEnabled(true);
 	this->spawn_type = Entity::ROCK;
 	this->delta_time = sf::Time::Zero;
 }
