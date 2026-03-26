@@ -19,6 +19,12 @@ class GUI
 		MODE_LAST
 	} mode;
 
+	enum class QuantityMode: int {
+		PROPORTIONAL,
+		LINEAR,
+		MODE_LAST
+	} quantity_mode;
+
 	Entity::Type choice;
 
 public:
@@ -33,6 +39,9 @@ public:
 
 	float spawn_area_radius;
 	sf::CircleShape spawn_area;
+
+	int quantity;
+	bool clear_all_entity;
 };
 
 #endif

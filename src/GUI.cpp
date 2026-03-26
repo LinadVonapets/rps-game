@@ -1,6 +1,7 @@
 #include "GUI.hpp"
 
 #include <iostream>
+#include <cmath>
 
 #include <imgui.h>
 #include <imgui-SFML.h>
@@ -21,9 +22,11 @@ GUI::GUI(sf::RenderWindow& window)
 	this->spawn_area.setRadius(spawn_area_radius);
 	this->spawn_area.setOrigin(this->spawn_area.getLocalBounds().getCenter());
 	this->spawn_area.setFillColor(sf::Color::Transparent);
-	this->spawn_area.setOutlineThickness(1.f);
-	this->spawn_area.setOutlineColor(sf::Color::Red);
-	
+	this->spawn_area.setOutlineThickness(2.f);
+
+	this->spawn_area.setOutlineColor(sf::Color(255, 0, 0, 128));
+
+	this->clear_all_entity = false;
 }
 
 void GUI::process_events(const std::optional<sf::Event> event)
@@ -36,20 +39,22 @@ void GUI::process_events(const std::optional<sf::Event> event)
 	}
 	else if (const auto mouseWheelScrolled = event->getIf<sf::Event::MouseWheelScrolled>())
 	{
-		if (mouseWheelScrolled->delta < 0)
-			spawn_area_radius += 10;
-		else
-			spawn_area_radius -= 10;
+		if (!this->is_want_capture_mouse()) 
+		{
+			if (mouseWheelScrolled->delta < 0)
+				spawn_area_radius += 10;
+			else
+				spawn_area_radius -= 10;
 
-		if (spawn_area_radius < 0)
-			spawn_area_radius = 0;
-		else 
-		if (spawn_area_radius > 300)
-			spawn_area_radius = 300;
-		
-		this->spawn_area.setRadius(spawn_area_radius);
-		this->spawn_area.setOrigin(this->spawn_area.getLocalBounds().getCenter());
-		
+			if (spawn_area_radius < 0)
+				spawn_area_radius = 0;
+			else 
+			if (spawn_area_radius > 300)
+				spawn_area_radius = 300;
+			
+			this->spawn_area.setRadius(spawn_area_radius);
+			this->spawn_area.setOrigin(this->spawn_area.getLocalBounds().getCenter());
+		}
 	}
 }
 
@@ -57,6 +62,12 @@ void GUI::update(sf::Time dt)
 {
 	ImGui::SFML::Update(this->window, dt);
 	this->spawn_area.setPosition(sf::Vector2f(sf::Mouse::getPosition(this->window)));
+
+	if (this->quantity_mode == QuantityMode::PROPORTIONAL)
+		this->quantity = spawn_area_radius * 1/8;
+
+	if (this->quantity < 0)
+		this->quantity = 0;
 }
 
 void GUI::display()
@@ -64,28 +75,43 @@ void GUI::display()
 	if(this->show)
 	{
 		ImGui::Begin("Tools");
+		
+		if (ImGui::Button("Clear All")) {
+			this->clear_all_entity = true;
+		}
+
 		ImGui::Text("Mode");
 
-		ImGui::RadioButton("Move", reinterpret_cast<int*>(&mode), static_cast<int>(Mode::MOVE_OR_DRAG));
-		ImGui::RadioButton("Spawn", reinterpret_cast<int*>(&mode), static_cast<int>(Mode::SPAWN));
+		ImGui::RadioButton("Move", reinterpret_cast<int*>(&this->mode), static_cast<int>(Mode::MOVE_OR_DRAG));
+		ImGui::RadioButton("Spawn", reinterpret_cast<int*>(&this->mode), static_cast<int>(Mode::SPAWN));
 		
 
 		//TODO: Add icons to choices
 		// You need to implement texture manager to pick that texture from him
-		ImGui::Text("Entity:");
+		ImGui::BeginDisabled(this->mode != Mode::SPAWN);
 
-		ImGui::BeginDisabled(mode != Mode::SPAWN);
+		ImGui::Text("Entity");
+		ImGui::RadioButton("Rock", (int*)(&this->choice), Entity::Type::ROCK);
+		ImGui::RadioButton("Paper", (int*)(&this->choice), Entity::Type::PAPER);
+		ImGui::RadioButton("Scissors", (int*)(&this->choice), Entity::Type::SCISSORS);
 
-		ImGui::RadioButton("Rock", (int*)(&choice), Entity::Type::ROCK);
-		ImGui::RadioButton("Paper", (int*)(&choice), Entity::Type::PAPER);
-		ImGui::RadioButton("Scissors", (int*)(&choice), Entity::Type::SCISSORS);
+		ImGui::Text("Quontity mode");
+		ImGui::RadioButton("Proportional to area spawn radius", reinterpret_cast<int*>(&this->quantity_mode), static_cast<int>(QuantityMode::PROPORTIONAL));
 		
+		ImGui::RadioButton("Linear", reinterpret_cast<int*>(&this->quantity_mode), static_cast<int>(QuantityMode::LINEAR));
+		
+		ImGui::BeginDisabled(this->quantity_mode != QuantityMode::LINEAR);
+		ImGui::InputInt("Quantity", &this->quantity);
+			
+		ImGui::EndDisabled();
+
 		ImGui::EndDisabled();
 
 		ImGui::End();
 	}
-	
-	this->window.draw(spawn_area);
+
+	if (!this->is_want_capture_mouse())
+		this->window.draw(spawn_area);
 
 	ImGui::SFML::Render(this->window);
 }
