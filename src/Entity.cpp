@@ -31,11 +31,13 @@ void Entity::update(sf::Time dt)
 
 void Entity::setPos(float x, float y)
 {
+	this->m_pos = {x, y};
 	m_sprite.setPosition({x, y});
 }
 
 void Entity::setPos(sf::Vector2f pos)
 {
+	this->m_pos = pos;
 	m_sprite.setPosition(pos);
 }
 
