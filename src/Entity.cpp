@@ -12,8 +12,11 @@ Entity::Entity(Type type)
 }
 
 Entity::Entity(const Entity& value)
-	:m_type{value.m_type}, m_direction{value.m_direction}, m_id{value.m_id}, 
-	m_sprite(value.m_sprite), m_sound{value.m_sound}
+	: m_type{value.m_type}
+	, m_sprite(value.m_sprite)
+	, m_sound{value.m_sound}
+	, m_direction{value.m_direction}
+	, m_id{value.m_id}
 {
 	update_table();
 }
@@ -186,8 +189,9 @@ bool Entity::beats(const Entity::Type defender)
 		return defender == Entity::PAPER;
 	case Entity::PAPER:
 		return defender == Entity::ROCK;
+	default:
+		return false;
 	}
-	return false;
 }
 
 bool Entity::loses_to(const Entity::Type attacker)
@@ -200,8 +204,9 @@ bool Entity::loses_to(const Entity::Type attacker)
 		return attacker == Entity::SCISSORS;
 	case Entity::SCISSORS:
 		return attacker == Entity::ROCK;
+	default:
+		return false;
 	}
-	return false;
 }
 
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const

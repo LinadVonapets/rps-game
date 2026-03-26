@@ -35,13 +35,16 @@ private:
 	
 	float m_speed = 80;
 
+	//----------------------------------------------------------------//
+	// Do not change order of these fields, because we initialize them 
+	// in member initializer list exactly in the order they are declared here
+	Type m_type;
 	sf::Sprite m_sprite;
 	sf::Sound m_sound;
-
-	int m_id;
-
 	sf::Vector2f m_direction;
-	Type m_type;
+	int m_id;
+	//----------------------------------------------------------------//
+
 	sf::Vector2f m_pos;
 
 public:
