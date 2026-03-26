@@ -4,6 +4,7 @@
 #include <optional>
 
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/CircleShape.hpp>
 
 #include "Entity.hpp"
 
@@ -28,6 +29,9 @@ public:
 	bool is_want_capture_mouse(); 
 
 	Entity::Type get_entity_type();
+
+	float spawn_area_radius;
+	sf::CircleShape spawn_area;
 };
 
 #endif

@@ -7,7 +7,6 @@
 
 GUI::GUI(sf::RenderWindow& window)
 	: window{window}
-	
 {	
 	if(!ImGui::SFML::Init(window))
 	{
@@ -16,7 +15,15 @@ GUI::GUI(sf::RenderWindow& window)
 		throw std::runtime_error(msg);
 	}
 	this->show = true;
-	choice = {.rock = true};
+	this->choice = {.rock = true};
+	
+	this->spawn_area_radius = 0;
+	this->spawn_area.setRadius(spawn_area_radius);
+	this->spawn_area.setOrigin(this->spawn_area.getLocalBounds().getCenter());
+	this->spawn_area.setFillColor(sf::Color::Transparent);
+	this->spawn_area.setOutlineThickness(1.f);
+	this->spawn_area.setOutlineColor(sf::Color::Red);
+	
 }
 
 void GUI::process_events(const std::optional<sf::Event> event)
@@ -27,18 +34,46 @@ void GUI::process_events(const std::optional<sf::Event> event)
 		if (key->scancode == sf::Keyboard::Scancode::M)
 			this->show =! this->show;
 	}
+	else if (const auto mouseWheelScrolled = event->getIf<sf::Event::MouseWheelScrolled>())
+	{
+		if (mouseWheelScrolled->delta < 0)
+			spawn_area_radius += 10;
+		else
+			spawn_area_radius -= 10;
+
+		if (spawn_area_radius < 0)
+			spawn_area_radius = 0;
+		else 
+		if (spawn_area_radius > 300)
+			spawn_area_radius = 300;
+		
+		this->spawn_area.setRadius(spawn_area_radius);
+		this->spawn_area.setOrigin(this->spawn_area.getLocalBounds().getCenter());
+		
+	}
 }
 
 void GUI::update(sf::Time dt)
 {
 	ImGui::SFML::Update(this->window, dt);
+	this->spawn_area.setPosition(sf::Vector2f(sf::Mouse::getPosition(this->window)));
 }
 
 void GUI::display()
 {
+
 	if(this->show)
 	{
-		ImGui::Begin("Pickup Entity");
+		ImGui::Begin("Tools");
+		ImGui::Text("Mode");
+
+		ImGui::Button("Move");
+		ImGui::Button("Spawn");
+		
+
+		//TODO: Add icons to choices
+		// You need to implement texture manager to pick that texture from him
+		ImGui::Text("Entity:");
 		if (ImGui::RadioButton("Rock", choice.rock))
 			choice = {.rock=true};
 
@@ -50,6 +85,8 @@ void GUI::display()
 		
 		ImGui::End();
 	}
+	
+	this->window.draw(spawn_area);
 
 	ImGui::SFML::Render(this->window);
 }
