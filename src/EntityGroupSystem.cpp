@@ -17,7 +17,9 @@ void EntityGroupSystem::spawn_group(Entity::Type type, int amount, sf::Vector2f 
 
 sf::Vector2f EntityGroupSystem::randomize_coord(float x, float y, float R_max)
 {
-	double angle = get_random(0.f, std::acos(-1)); // acos(-1) used here to generate PI constant with double precision
+	// acos(-1) used here to generate PI constant with double precision
+	double Pi = std::acos(-1);
+	double angle = get_random(0.f, 2*Pi); 
 	int radius = get_random(0, R_max);
 	float x_offseted = std::cos(angle) * radius + x;
 	float y_offseted = std::sin(angle) * radius + y;
