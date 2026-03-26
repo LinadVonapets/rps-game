@@ -26,7 +26,7 @@ Core::Core()
 
 void Core::run()
 {
-	int group_radius = 250;
+	int group_radius = 125;
 
 	entity_group_system.spawn_group(Entity::SCISSORS, 20, {100, 300}, group_radius);
 	entity_group_system.spawn_group(Entity::PAPER, 20, {350, 100}, group_radius);
