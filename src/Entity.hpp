@@ -53,6 +53,9 @@ public:
 	static void loadMedia();
 
 private:
+	bool beats(const Type defender);
+	bool loses_to(const Type attacker);
+
 	sf::Vector2f get_mate_direction();
 	void update_table();
 	bool collide(const sf::FloatRect& rect) const;

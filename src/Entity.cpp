@@ -86,14 +86,14 @@ void Entity::check_captured()
 		// checking capture
 		if(collide(enemy.rect))
 		{
-			if(m_type == ROCK && enemy.type == PAPER || m_type == PAPER && enemy.type == SCISSORS || m_type == SCISSORS && enemy.type == ROCK)
+			if(this->loses_to(enemy.type))
 			{
 				m_type = enemy.type;
 				m_sound.setBuffer(m_soundbuffers[m_type]);
 				m_sprite.setTexture(m_texturebuffers[m_type]);
 			}
 
-			if(m_type == ROCK && enemy.type == SCISSORS || m_type == PAPER && enemy.type == ROCK || m_type == SCISSORS && enemy.type == PAPER)
+			if(this->beats(enemy.type))
 			{
 				m_sound.play();
 			}
@@ -122,14 +122,18 @@ sf::Vector2f Entity::get_direction(bool hunter_flag)
 		else
 			direction = {0,0};
 
-
-		if (hunter_flag) {
-			if (entity.type == ROCK && m_type == SCISSORS || entity.type == PAPER && m_type == ROCK || entity.type == SCISSORS && m_type == PAPER) {
+		if (hunter_flag)
+		{
+			if (this->loses_to(entity.type))
+			{
 				distances.push_back(distance);
 				directions.push_back(direction);
 			}
-		} else {
-			if(entity.type == ROCK && m_type == PAPER || entity.type == PAPER && m_type == SCISSORS || entity.type == SCISSORS && m_type == ROCK) {
+		}
+		else
+		{
+			if(this->beats(entity.type))
+			{
 				distances.push_back(distance);
 				directions.push_back(direction);
 			}
@@ -172,6 +176,33 @@ void Entity::loadMedia()
 	}
 }
 
+bool Entity::beats(const Entity::Type defender)
+{
+	switch(this->m_type)
+	{
+	case Entity::ROCK:
+		return defender == Entity::SCISSORS;
+	case Entity::SCISSORS:
+		return defender == Entity::PAPER;
+	case Entity::PAPER:
+		return defender == Entity::ROCK;
+	}
+	return false;
+}
+
+bool Entity::loses_to(const Entity::Type attacker)
+{
+	switch(this->m_type)
+	{
+	case Entity::ROCK:
+		return attacker == Entity::PAPER;
+	case Entity::PAPER:
+		return attacker == Entity::SCISSORS;
+	case Entity::SCISSORS:
+		return attacker == Entity::ROCK;
+	}
+	return false;
+}
 
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
