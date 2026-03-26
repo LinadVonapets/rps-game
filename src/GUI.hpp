@@ -13,12 +13,13 @@ class GUI
 	sf::RenderWindow& window;
 	bool show;
 
-	struct EntityPicked
-	{
-		bool rock;
-		bool scissors;
-		bool paper;
-	} choice;
+	enum class Mode : int {
+		MOVE_OR_DRAG,
+		SPAWN,
+		MODE_LAST
+	} mode;
+
+	Entity::Type choice;
 
 public:
 	GUI(sf::RenderWindow& window);

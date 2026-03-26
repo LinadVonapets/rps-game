@@ -15,7 +15,7 @@ GUI::GUI(sf::RenderWindow& window)
 		throw std::runtime_error(msg);
 	}
 	this->show = true;
-	this->choice = {.rock = true};
+	this->choice = Entity::Type::ROCK;
 	
 	this->spawn_area_radius = 0;
 	this->spawn_area.setRadius(spawn_area_radius);
@@ -61,28 +61,27 @@ void GUI::update(sf::Time dt)
 
 void GUI::display()
 {
-
 	if(this->show)
 	{
 		ImGui::Begin("Tools");
 		ImGui::Text("Mode");
 
-		ImGui::Button("Move");
-		ImGui::Button("Spawn");
+		ImGui::RadioButton("Move", reinterpret_cast<int*>(&mode), static_cast<int>(Mode::MOVE_OR_DRAG));
+		ImGui::RadioButton("Spawn", reinterpret_cast<int*>(&mode), static_cast<int>(Mode::SPAWN));
 		
 
 		//TODO: Add icons to choices
 		// You need to implement texture manager to pick that texture from him
 		ImGui::Text("Entity:");
-		if (ImGui::RadioButton("Rock", choice.rock))
-			choice = {.rock=true};
 
-		if (ImGui::RadioButton("Paper", choice.paper))
-			choice = {.paper=true};
+		ImGui::BeginDisabled(mode != Mode::SPAWN);
+
+		ImGui::RadioButton("Rock", (int*)(&choice), Entity::Type::ROCK);
+		ImGui::RadioButton("Paper", (int*)(&choice), Entity::Type::PAPER);
+		ImGui::RadioButton("Scissors", (int*)(&choice), Entity::Type::SCISSORS);
 		
-		if (ImGui::RadioButton("Scissors", choice.scissors))
-			choice = {.scissors=true};
-		
+		ImGui::EndDisabled();
+
 		ImGui::End();
 	}
 	
@@ -97,13 +96,8 @@ bool GUI::is_want_capture_mouse()
 }
 
 Entity::Type GUI::get_entity_type() 
-{
-	if (choice.rock)
-		return Entity::Type::ROCK;
-	else if (choice.paper)
-		return Entity::Type::PAPER;
-	else if (choice.scissors)
-		return Entity::Type::SCISSORS;
-		
-	return Entity::Type::UNKNOWN;
+{	
+	if (mode != Mode::SPAWN)
+		return Entity::Type::UNKNOWN;
+	return choice;
 }
