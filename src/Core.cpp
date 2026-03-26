@@ -55,6 +55,11 @@ const sf::Rect<std::uint32_t>& Core::get_window_rect()
 	return this->window_rect;
 }
 
+GUI& Core::get_user_interface()
+{
+	return this->user_interface;
+}
+
 void Core::message_to_title(sf::String msg)
 {
 	this->window.setTitle(this->window_title + ": [" + msg + "]");

@@ -39,6 +39,7 @@ public:
 
 	void run();
 	const sf::Rect<std::uint32_t>& get_window_rect();
+	GUI& get_user_interface();
 
 	void message_to_title(sf::String msg);
 	void message_to_stdout(sf::String msg);
