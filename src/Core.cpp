@@ -26,12 +26,6 @@ Core::Core()
 
 void Core::run()
 {
-	int group_radius = 125;
-
-	entity_group_system.spawn_group(Entity::SCISSORS, 20, {100, 300}, group_radius);
-	entity_group_system.spawn_group(Entity::PAPER, 20, {350, 100}, group_radius);
-	entity_group_system.spawn_group(Entity::ROCK, 20, {700, 400}, group_radius);
-
 	while(this->window.isOpen())
 	{
 		this->delta_time = this->delta_clock.restart();
@@ -87,7 +81,12 @@ void Core::process_events(const std::optional<sf::Event> event)
 	{
 		if ((MouseKey->button == sf::Mouse::Button::Left) && !user_interface.is_want_capture_mouse()) 
 		{
-			entity_group_system.spawn_group(user_interface.get_entity_type(), 1, sf::Vector2f(MouseKey->position), user_interface.spawn_area_radius);
+			entity_group_system.spawn_group(
+				user_interface.get_entity_type(), 
+				user_interface.quantity, 
+				sf::Vector2f(MouseKey->position), 
+				user_interface.spawn_area_radius
+			);
 		}
 	}
 }
