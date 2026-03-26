@@ -8,6 +8,12 @@ EntityGroupSystem::EntityGroupSystem()
 
 void EntityGroupSystem::spawn_group(Entity::Type type, int amount, sf::Vector2f pos, float radius)
 {
+	if (type == Entity::Type::UNKNOWN)
+	{
+		std::cerr << "EntityGroupSystem::spawn_group: UNKNOWN type specified!" << std::endl;
+		return;
+	}
+		
 	for(int i = 0; i < amount; ++i) {
 		Entity temp(type);
 		temp.setPos(randomize_coord(pos.x, pos.y, radius));
