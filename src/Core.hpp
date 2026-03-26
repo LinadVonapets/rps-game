@@ -14,13 +14,15 @@ class Core
 private:
 	static inline Core* instance = nullptr;
 	
+	//----------------------------------------------------------------//
 	// Do not change order of these fields, because we initialize them 
 	// in member initializer list exactly in the order they are declared here
+
 	sf::String window_title;
 	sf::Rect<std::uint32_t> window_rect;
 	sf::RenderWindow window;
 	GUI user_interface;
-	//////////////////////////////////////////////////////////////////
+	//----------------------------------------------------------------//
 
 	EntityGroupSystem entity_group_system;
 
