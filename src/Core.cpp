@@ -78,10 +78,6 @@ void Core::process_events(const std::optional<sf::Event> event)
 	{
 		this->window.close();
 	}
-	else if (const auto* KeyPressed = event->getIf<sf::Event::KeyPressed>())
-	{
-		
-	}
 	else if (const auto* MouseKey = event->getIf<sf::Event::MouseButtonPressed>())
 	{
 		if ((MouseKey->button == sf::Mouse::Button::Left) && !user_interface.is_want_capture_mouse()) 
