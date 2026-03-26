@@ -1,5 +1,6 @@
 #include "EntityGroupSystem.hpp"
 
+#include "Core.hpp"
 
 EntityGroupSystem::EntityGroupSystem()
 	:m_random_engine{m_dev()}
@@ -41,6 +42,12 @@ double EntityGroupSystem::get_random(double begin, double end)
 
 void EntityGroupSystem::update(sf::Time dt)
 {
+	if (Core::get_instance().get_user_interface().clear_all_entity)
+	{
+		m_entities.clear();
+		Entity::clear_table();
+		Core::get_instance().get_user_interface().clear_all_entity = false;
+	}
 	for(Entity& entity: m_entities)
 		entity.update(dt);
 }
