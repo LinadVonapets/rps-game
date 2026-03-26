@@ -82,7 +82,7 @@ void Core::process_events(const std::optional<sf::Event> event)
 	{
 		if ((MouseKey->button == sf::Mouse::Button::Left) && !user_interface.is_want_capture_mouse()) 
 		{
-			entity_group_system.spawn_group(user_interface.get_entity_type(), 1, sf::Vector2f(MouseKey->position), 0);
+			entity_group_system.spawn_group(user_interface.get_entity_type(), 1, sf::Vector2f(MouseKey->position), user_interface.spawn_area_radius);
 		}
 	}
 }
