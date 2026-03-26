@@ -29,9 +29,12 @@ public:
 private:
 	float m_speed = 80;
 	static inline std::vector<Entity::Pair> table{};
-	static inline int m_id_counter{0};
-
 	static inline std::array<sf::Texture, Type::ALL> m_texturebuffers;
+	static inline std::array<sf::SoundBuffer, Type::ALL> m_soundbuffers;
+	static inline int m_id_counter{0};
+	
+	float m_speed = 80;
+
 	sf::Sprite m_sprite;
 
 	static inline std::array<sf::SoundBuffer, Type::ALL> m_soundbuffers;

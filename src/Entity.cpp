@@ -110,13 +110,15 @@ sf::Vector2f Entity::get_direction(bool hunter_flag)
 {
 	std::vector<float> distances;
 	std::vector<sf::Vector2f> directions;
-	for(const auto& entity: table) {
+
+	for(const auto& entity: Entity::table) {
 		float distance;
 		sf::Vector2f direction;
 		sf::Vector2f victim_pos(entity.rect.position.x, entity.rect.position.y);
-		distance = (victim_pos - sf::Vector2f(m_sprite.getPosition())).length();
+
+		distance = (victim_pos - m_sprite.getPosition()).length();
 		if(distance > 0)
-			direction = (victim_pos - sf::Vector2f(m_sprite.getPosition())).normalized();
+			direction = (victim_pos - m_sprite.getPosition()).normalized();
 		else
 			direction = {0,0};
 
@@ -134,7 +136,7 @@ sf::Vector2f Entity::get_direction(bool hunter_flag)
 		}
 	}
 
-	if (!distances.empty() && !directions.empty())
+	if (!(distances.empty() || directions.empty()))
 	{
 		std::vector<float>::iterator it = std::min_element(distances.begin(), distances.end());
 		int index = std::distance(distances.begin(), it);
