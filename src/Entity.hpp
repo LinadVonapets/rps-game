@@ -18,6 +18,7 @@ public:
 		ROCK,
 		PAPER,
 		SCISSORS,
+		UNKNOWN,
 		ALL
 	};
 	struct Pair
@@ -27,7 +28,6 @@ public:
 	};
 
 private:
-	float m_speed = 80;
 	static inline std::vector<Entity::Pair> table{};
 	static inline std::array<sf::Texture, Type::ALL> m_texturebuffers;
 	static inline std::array<sf::SoundBuffer, Type::ALL> m_soundbuffers;
@@ -36,8 +36,6 @@ private:
 	float m_speed = 80;
 
 	sf::Sprite m_sprite;
-
-	static inline std::array<sf::SoundBuffer, Type::ALL> m_soundbuffers;
 	sf::Sound m_sound;
 
 	int m_id;
