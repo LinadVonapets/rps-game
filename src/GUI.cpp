@@ -67,4 +67,6 @@ Entity::Type GUI::get_entity_type()
 		return Entity::Type::PAPER;
 	else if (choice.scissors)
 		return Entity::Type::SCISSORS;
+		
+	return Entity::Type::UNKNOWN;
 }
