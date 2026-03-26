@@ -54,6 +54,7 @@ public:
 	void setPos(float x, float y);
 	void setPos(sf::Vector2f pos);
 	static void loadMedia();
+	static void clear_table();
 
 private:
 	bool beats(const Type defender);

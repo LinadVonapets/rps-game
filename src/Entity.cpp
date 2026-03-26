@@ -181,6 +181,12 @@ void Entity::loadMedia()
 	}
 }
 
+void Entity::clear_table()
+{
+	m_id_counter = 0;
+	table.clear();
+}
+
 bool Entity::beats(const Entity::Type defender)
 {
 	switch(this->m_type)
