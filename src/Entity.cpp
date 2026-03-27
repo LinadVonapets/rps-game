@@ -134,32 +134,32 @@ void Entity::update_direction()
 
 void Entity::do_direction_search(const Entity::Pair& p_entity_pair)
 {
-		float distance;
-		sf::Vector2f direction = {0,0};
+	float distance;
+	sf::Vector2f direction = {0,0};
 
-		sf::Vector2f difference = (p_entity_pair.rect.position - m_sprite.getPosition());
+	sf::Vector2f difference = (p_entity_pair.rect.position - m_sprite.getPosition());
 
-		distance = difference.lengthSquared();
-		if(distance > 0)
-			direction = difference; 
+	distance = difference.lengthSquared();
+	if(distance > 0)
+		direction = difference; 
 
-		
-		if (this->loses_to(p_entity_pair.type))
+	
+	if (this->loses_to(p_entity_pair.type))
+	{
+		if (this->hunter_min_dist > distance)
 		{
-			if (this->hunter_min_dist > distance)
-			{
-				this->hunter_min_dist = distance;
-				this->hunter_min_dist_dir = direction;
-			}
+			this->hunter_min_dist = distance;
+			this->hunter_min_dist_dir = direction;
 		}
-		else if(this->beats(p_entity_pair.type))
+	}
+	else if(this->beats(p_entity_pair.type))
+	{
+		if (this->victim_min_dist > distance)
 		{
-			if (this->victim_min_dist > distance)
-			{
-				this->victim_min_dist = distance;
-				this->victim_min_dist_dir = direction;
-			}
+			this->victim_min_dist = distance;
+			this->victim_min_dist_dir = direction;
 		}
+	}
 }
 
 void Entity::reset_direction_search()
