@@ -69,7 +69,7 @@ private:
 	bool collide(const sf::FloatRect& rect) const;
 	void collisions_with_walls(char direct);
 	void move(sf::Time dt);
-	void check_captured();
+	void check_captured(const Entity::Pair& p_enitty_pair);
 	void update_direction();
 	VectorPair get_direction();
 	void reset_direction_search();

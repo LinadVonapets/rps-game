@@ -32,7 +32,11 @@ Entity::Entity(const Entity& value)
 
 void Entity::update(sf::Time dt)
 {
-	check_captured();
+	for (const auto& entity: Entity::table)
+	{
+		this->check_captured(entity);
+
+	}
 	update_direction();
 	move(dt);
 	update_table();
@@ -93,24 +97,20 @@ void Entity::move(sf::Time dt)
 	m_sprite.setPosition(m_pos);
 }
 
-void Entity::check_captured()
-{
-	for(const auto& enemy: table)
+void Entity::check_captured(const Entity::Pair& p_entity_pair)
+{	
+	if(collide(p_entity_pair.rect))
 	{
-		// checking capture
-		if(collide(enemy.rect))
+		if(this->loses_to(p_entity_pair.type))
 		{
-			if(this->loses_to(enemy.type))
-			{
-				m_type = enemy.type;
-				m_sound.setBuffer(m_soundbuffers[m_type]);
-				m_sprite.setTexture(m_texturebuffers[m_type]);
-			}
+			m_type = p_entity_pair.type;
+			m_sound.setBuffer(m_soundbuffers[m_type]);
+			m_sprite.setTexture(m_texturebuffers[m_type]);
+		}
 
-			if(this->beats(enemy.type))
-			{
-				m_sound.play();
-			}
+		if(this->beats(p_entity_pair.type))
+		{
+			m_sound.play();
 		}
 	}
 }
