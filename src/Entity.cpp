@@ -189,32 +189,42 @@ void Entity::clear_table()
 
 bool Entity::beats(const Entity::Type defender)
 {
+	bool ret = false;
 	switch(this->m_type)
 	{
 	case Entity::ROCK:
-		return defender == Entity::SCISSORS;
+		ret = (defender == Entity::SCISSORS);
+		break;
 	case Entity::SCISSORS:
-		return defender == Entity::PAPER;
+		ret = (defender == Entity::PAPER);
+		break;
 	case Entity::PAPER:
-		return defender == Entity::ROCK;
+		ret = (defender == Entity::ROCK);
+		break;
 	default:
-		return false;
+		break;
 	}
+	return ret;
 }
 
 bool Entity::loses_to(const Entity::Type attacker)
 {
+	bool ret = false;
 	switch(this->m_type)
 	{
 	case Entity::ROCK:
-		return attacker == Entity::PAPER;
+		ret = (attacker == Entity::PAPER);
+		break;
 	case Entity::PAPER:
-		return attacker == Entity::SCISSORS;
+		ret = (attacker == Entity::SCISSORS);
+		break;
 	case Entity::SCISSORS:
-		return attacker == Entity::ROCK;
+		ret = (attacker == Entity::ROCK);
+		break;
 	default:
-		return false;
+		break;
 	}
+	return ret;
 }
 
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const
