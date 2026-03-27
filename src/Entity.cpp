@@ -32,8 +32,8 @@ Entity::Entity(const Entity& value)
 
 void Entity::update(sf::Time dt)
 {
-	update_direction();
 	check_captured();
+	update_direction();
 	move(dt);
 	update_table();
 }
@@ -124,6 +124,9 @@ void Entity::update_direction()
 
 Entity::VectorPair Entity::get_direction()
 {
+	sf::Vector2f victim_direction(0, 0);
+	sf::Vector2f hunter_direction(0, 0);
+
 	for(const auto& entity: Entity::table) {
 		float distance;
 		sf::Vector2f direction = {0,0};
@@ -153,8 +156,13 @@ Entity::VectorPair Entity::get_direction()
 		}
 		
 	}
+	
+	if (victim_min_dist_dir.lengthSquared() != 0)
+		victim_direction = victim_min_dist_dir.normalized();
+	if (hunter_min_dist_dir.lengthSquared() != 0)
+		hunter_direction = hunter_min_dist_dir.normalized();
 
-	return {victim_min_dist_dir.normalized(), hunter_min_dist_dir.normalized()};
+	return {victim_direction, hunter_direction};
 }
 
 void Entity::reset_direction_search()
