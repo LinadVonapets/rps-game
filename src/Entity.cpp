@@ -58,6 +58,79 @@ void Entity::setPos(sf::Vector2f pos)
 	m_sprite.setPosition(pos);
 }
 
+void Entity::loadMedia()
+{
+	if(!m_texturebuffers[Entity::ROCK].loadFromFile("assets/rock.png")) {
+		std::cout << "Failed to load texture: 'assets/rock.png'\n";
+	}
+
+	if(!m_texturebuffers[Entity::PAPER].loadFromFile("assets/paper.png")) {
+		std::cout << "Failed to load texture: 'assets/paper.png'\n";
+	}
+
+	if(!m_texturebuffers[Entity::SCISSORS].loadFromFile("assets/scissors.png")) {
+		std::cout << "Failed to load texture: 'assets/scissors.png'\n";
+	}
+
+	if(!m_soundbuffers[Entity::ROCK].loadFromFile("assets/rock.wav")) {
+		std::cout << "Failed to load sound: 'assets/rock.wav'\n";
+	}
+
+	if(!m_soundbuffers[Entity::PAPER].loadFromFile("assets/paper.wav")) {
+		std::cout << "Failed to load sound: 'assets/paper.wav'\n";
+	}
+
+	if(!m_soundbuffers[Entity::SCISSORS].loadFromFile("assets/scissors.wav")) {
+		std::cout << "Failed to load sound: 'assets/scissors.wav'\n";
+	}
+}
+
+void Entity::clear_table()
+{
+	m_id_counter = 0;
+	table.clear();
+}
+
+bool Entity::beats(const Entity::Type defender)
+{
+	bool ret = false;
+	switch(this->m_type)
+	{
+	case Entity::ROCK:
+		ret = (defender == Entity::SCISSORS);
+		break;
+	case Entity::SCISSORS:
+		ret = (defender == Entity::PAPER);
+		break;
+	case Entity::PAPER:
+		ret = (defender == Entity::ROCK);
+		break;
+	default:
+		break;
+	}
+	return ret;
+}
+
+bool Entity::loses_to(const Entity::Type attacker)
+{
+	bool ret = false;
+	switch(this->m_type)
+	{
+	case Entity::ROCK:
+		ret = (attacker == Entity::PAPER);
+		break;
+	case Entity::PAPER:
+		ret = (attacker == Entity::SCISSORS);
+		break;
+	case Entity::SCISSORS:
+		ret = (attacker == Entity::ROCK);
+		break;
+	default:
+		break;
+	}
+	return ret;
+}
+
 // inefficiant method, need to find another solution 
 void Entity::update_table()
 {
@@ -168,79 +241,6 @@ void Entity::reset_direction_search()
 	this->victim_min_dist = this->hunter_min_dist;
 	this->hunter_min_dist_dir = {0, 0};
 	this->victim_min_dist_dir = {0, 0};
-}
-
-void Entity::loadMedia()
-{
-	if(!m_texturebuffers[Entity::ROCK].loadFromFile("assets/rock.png")) {
-		std::cout << "Failed to load texture: 'assets/rock.png'\n";
-	}
-
-	if(!m_texturebuffers[Entity::PAPER].loadFromFile("assets/paper.png")) {
-		std::cout << "Failed to load texture: 'assets/paper.png'\n";
-	}
-
-	if(!m_texturebuffers[Entity::SCISSORS].loadFromFile("assets/scissors.png")) {
-		std::cout << "Failed to load texture: 'assets/scissors.png'\n";
-	}
-
-	if(!m_soundbuffers[Entity::ROCK].loadFromFile("assets/rock.wav")) {
-		std::cout << "Failed to load sound: 'assets/rock.wav'\n";
-	}
-
-	if(!m_soundbuffers[Entity::PAPER].loadFromFile("assets/paper.wav")) {
-		std::cout << "Failed to load sound: 'assets/paper.wav'\n";
-	}
-
-	if(!m_soundbuffers[Entity::SCISSORS].loadFromFile("assets/scissors.wav")) {
-		std::cout << "Failed to load sound: 'assets/scissors.wav'\n";
-	}
-}
-
-void Entity::clear_table()
-{
-	m_id_counter = 0;
-	table.clear();
-}
-
-bool Entity::beats(const Entity::Type defender)
-{
-	bool ret = false;
-	switch(this->m_type)
-	{
-	case Entity::ROCK:
-		ret = (defender == Entity::SCISSORS);
-		break;
-	case Entity::SCISSORS:
-		ret = (defender == Entity::PAPER);
-		break;
-	case Entity::PAPER:
-		ret = (defender == Entity::ROCK);
-		break;
-	default:
-		break;
-	}
-	return ret;
-}
-
-bool Entity::loses_to(const Entity::Type attacker)
-{
-	bool ret = false;
-	switch(this->m_type)
-	{
-	case Entity::ROCK:
-		ret = (attacker == Entity::PAPER);
-		break;
-	case Entity::PAPER:
-		ret = (attacker == Entity::SCISSORS);
-		break;
-	case Entity::SCISSORS:
-		ret = (attacker == Entity::ROCK);
-		break;
-	default:
-		break;
-	}
-	return ret;
 }
 
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const
