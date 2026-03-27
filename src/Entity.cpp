@@ -118,14 +118,13 @@ sf::Vector2f Entity::get_direction(bool hunter_flag)
 
 	for(const auto& entity: Entity::table) {
 		float distance;
-		sf::Vector2f direction;
-		sf::Vector2f victim_pos(entity.rect.position.x, entity.rect.position.y);
+		sf::Vector2f direction = {0,0};
 
-		distance = (victim_pos - m_sprite.getPosition()).length();
+		sf::Vector2f difference = (entity.rect.position - m_sprite.getPosition());
+
+		distance = difference.lengthSquared();
 		if(distance > 0)
-			direction = (victim_pos - m_sprite.getPosition()).normalized();
-		else
-			direction = {0,0};
+			direction = difference; 
 
 		if (hunter_flag)
 		{
