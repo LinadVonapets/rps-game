@@ -13,7 +13,6 @@
 class Entity: public sf::Drawable
 {
 public:
-	using VectorPair = std::pair<sf::Vector2f, sf::Vector2f>;
 	enum Type
 	{
 		ROCK,
@@ -47,10 +46,14 @@ private:
 	float m_speed = 80;
 	sf::Vector2f m_pos;
 
+	// This ones needed as temporary when searching direction to near hunter/victim
 	float hunter_min_dist;
 	float victim_min_dist;
 	sf::Vector2f hunter_min_dist_dir;
 	sf::Vector2f victim_min_dist_dir;
+
+	sf::Vector2f hunter_direction;
+	sf::Vector2f victim_direction;
 
 public:
 	Entity(Type type);
@@ -71,7 +74,7 @@ private:
 	void move(sf::Time dt);
 	void check_captured(const Entity::Pair& p_enitty_pair);
 	void update_direction();
-	VectorPair get_direction();
+	void do_direction_search(const Entity::Pair& p_entity_pair);
 	void reset_direction_search();
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

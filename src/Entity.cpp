@@ -27,19 +27,23 @@ Entity::Entity(const Entity& p_other)
 	this->m_speed = p_other.m_speed;
 	this->hunter_min_dist = p_other.hunter_min_dist;
 	this->victim_min_dist = p_other.victim_min_dist;
+	this->hunter_direction = p_other.hunter_direction;
+	this->victim_direction = p_other.victim_direction;
 	update_table();
 }
 
 void Entity::update(sf::Time dt)
 {
+	this->reset_direction_search();
 	for (const auto& entity: Entity::table)
 	{
 		this->check_captured(entity);
+		this->do_direction_search(entity);
 
 	}
-	update_direction();
-	move(dt);
-	update_table();
+	this->update_direction();
+	this->move(dt);
+	this->update_table();
 }
 
 void Entity::setPos(float x, float y)
@@ -117,52 +121,45 @@ void Entity::check_captured(const Entity::Pair& p_entity_pair)
 
 void Entity::update_direction()
 {
-	this->reset_direction_search();
-	auto [victim_dir, hunter_dir] = get_direction();
-	m_direction = victim_dir - hunter_dir;
+	this->victim_direction = {0, 0};
+	this->hunter_direction = {0, 0};
+
+	if (victim_min_dist_dir.lengthSquared() != 0)
+		this->victim_direction = victim_min_dist_dir.normalized();
+	if (hunter_min_dist_dir.lengthSquared() != 0)
+		this->hunter_direction = hunter_min_dist_dir.normalized();
+
+	this->m_direction = this->victim_direction - hunter_direction;
 }
 
-Entity::VectorPair Entity::get_direction()
+void Entity::do_direction_search(const Entity::Pair& p_entity_pair)
 {
-	sf::Vector2f victim_direction(0, 0);
-	sf::Vector2f hunter_direction(0, 0);
-
-	for(const auto& entity: Entity::table) {
 		float distance;
 		sf::Vector2f direction = {0,0};
 
-		sf::Vector2f difference = (entity.rect.position - m_sprite.getPosition());
+		sf::Vector2f difference = (p_entity_pair.rect.position - m_sprite.getPosition());
 
 		distance = difference.lengthSquared();
 		if(distance > 0)
 			direction = difference; 
 
 		
-		if (this->loses_to(entity.type))
+		if (this->loses_to(p_entity_pair.type))
 		{
-			if (hunter_min_dist > distance)
+			if (this->hunter_min_dist > distance)
 			{
-				hunter_min_dist = distance;
-				hunter_min_dist_dir = direction;
+				this->hunter_min_dist = distance;
+				this->hunter_min_dist_dir = direction;
 			}
 		}
-		else if(this->beats(entity.type))
+		else if(this->beats(p_entity_pair.type))
 		{
-			if (victim_min_dist > distance)
+			if (this->victim_min_dist > distance)
 			{
-				victim_min_dist = distance;
-				victim_min_dist_dir = direction;
+				this->victim_min_dist = distance;
+				this->victim_min_dist_dir = direction;
 			}
 		}
-		
-	}
-	
-	if (victim_min_dist_dir.lengthSquared() != 0)
-		victim_direction = victim_min_dist_dir.normalized();
-	if (hunter_min_dist_dir.lengthSquared() != 0)
-		hunter_direction = hunter_min_dist_dir.normalized();
-
-	return {victim_direction, hunter_direction};
 }
 
 void Entity::reset_direction_search()
