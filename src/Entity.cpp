@@ -2,24 +2,25 @@
 #include "Core.hpp"
 
 Entity::Entity(Type type)
-	: m_type{type}
-	, m_sprite(m_texturebuffers[type])
+	: m_sprite(m_texturebuffers[type])
 	, m_sound(m_soundbuffers[type])
 {
-	m_id = m_id_counter++;
+	this->m_type = type;
+	this->m_id = m_id_counter++;
+
 	m_sprite.setScale(sf::Vector2f(0.2, 0.2));
 	table.push_back({m_type, m_sprite.getGlobalBounds()});
 }
 
 Entity::Entity(const Entity& value)
-	: m_type{value.m_type}
-	, m_sprite(value.m_sprite)
+	: m_sprite(value.m_sprite)
 	, m_sound{value.m_sound}
 	, m_direction{value.m_direction}
-	, m_id{value.m_id}
-	, m_speed{value.m_speed}
 	, m_pos{value.m_pos}
 {
+	this->m_type = value.m_type;
+	this->m_id = value.m_id;
+	this->m_speed = value.m_speed;
 	update_table();
 }
 
