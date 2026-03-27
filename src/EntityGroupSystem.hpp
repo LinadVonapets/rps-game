@@ -10,11 +10,11 @@
 class EntityGroupSystem: public sf::Drawable
 {
 private:
-	std::vector<Entity> m_entities;
+	std::random_device random_device;
+	std::mt19937 random_engine;
 
-	//random constants
-	std::random_device m_dev;
-	std::mt19937 m_random_engine;
+	std::vector<Entity> entities;
+
 
 public:
 	EntityGroupSystem();

@@ -3,7 +3,7 @@
 #include "Core.hpp"
 
 EntityGroupSystem::EntityGroupSystem()
-	:m_random_engine{m_dev()}
+	:random_engine{random_device()}
 {
 }
 
@@ -18,7 +18,7 @@ void EntityGroupSystem::spawn_group(Entity::Type type, int amount, sf::Vector2f 
 	for(int i = 0; i < amount; ++i) {
 		Entity temp(type);
 		temp.setPos(this->get_randomized_coord(pos.x, pos.y, radius));
-		m_entities.push_back(temp);
+		this->entities.push_back(temp);
 	}
 }
 
@@ -39,23 +39,23 @@ sf::Vector2f EntityGroupSystem::get_randomized_coord(float p_x, float p_y, float
 double EntityGroupSystem::get_random(double begin, double end)
 {
 	std::uniform_real_distribution<> dist(begin, end);
-	return dist(m_random_engine);
+	return dist(random_engine);
 }
 
 void EntityGroupSystem::update(sf::Time dt)
 {
 	if (Core::get_instance().get_user_interface().clear_all_entity)
 	{
-		m_entities.clear();
+		this->entities.clear();
 		Entity::clear_table();
 		Core::get_instance().get_user_interface().clear_all_entity = false;
 	}
-	for(Entity& entity: m_entities)
+	for(Entity& entity: this->entities)
 		entity.update(dt);
 }
 
 void EntityGroupSystem::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	for(const Entity& entity: m_entities)
+	for(const Entity& entity: this->entities)
 		target.draw(entity, states);
 }
