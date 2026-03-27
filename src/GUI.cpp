@@ -8,7 +8,7 @@
 
 GUI::GUI(sf::RenderWindow& window)
 	: window{window}
-{	
+{
 	if(!ImGui::SFML::Init(window))
 	{
 		std::string msg = "ImGui init failed! Exiting...";
@@ -17,7 +17,7 @@ GUI::GUI(sf::RenderWindow& window)
 	}
 	this->show = true;
 	this->choice = Entity::Type::ROCK;
-	
+
 	this->spawn_area_radius = 0;
 	this->spawn_area.setRadius(spawn_area_radius);
 	this->spawn_area.setOrigin(this->spawn_area.getLocalBounds().getCenter());
@@ -32,14 +32,14 @@ GUI::GUI(sf::RenderWindow& window)
 void GUI::process_events(const std::optional<sf::Event> event)
 {
 	ImGui::SFML::ProcessEvent(this->window, *event);
-	if (const auto* key = event->getIf<sf::Event::KeyPressed>()) 
-	{	
+	if (const auto* key = event->getIf<sf::Event::KeyPressed>())
+	{
 		if (key->scancode == sf::Keyboard::Scancode::M)
 			this->show =! this->show;
 	}
 	else if (const auto mouseWheelScrolled = event->getIf<sf::Event::MouseWheelScrolled>())
 	{
-		if (!this->is_want_capture_mouse()) 
+		if (!this->is_want_capture_mouse())
 		{
 			if (mouseWheelScrolled->delta < 0)
 				spawn_area_radius += 10;
@@ -48,10 +48,9 @@ void GUI::process_events(const std::optional<sf::Event> event)
 
 			if (spawn_area_radius < 0)
 				spawn_area_radius = 0;
-			else 
-			if (spawn_area_radius > 300)
+			else if (spawn_area_radius > 300)
 				spawn_area_radius = 300;
-			
+
 			this->spawn_area.setRadius(spawn_area_radius);
 			this->spawn_area.setOrigin(this->spawn_area.getLocalBounds().getCenter());
 		}
@@ -73,42 +72,7 @@ void GUI::update(sf::Time dt)
 void GUI::display()
 {
 	if(this->show)
-	{
-		ImGui::Begin("Tools");
-		
-		if (ImGui::Button("Clear All")) {
-			this->clear_all_entity = true;
-		}
-
-		ImGui::Text("Mode");
-
-		ImGui::RadioButton("Move", reinterpret_cast<int*>(&this->mode), static_cast<int>(Mode::MOVE_OR_DRAG));
-		ImGui::RadioButton("Spawn", reinterpret_cast<int*>(&this->mode), static_cast<int>(Mode::SPAWN));
-		
-
-		//TODO: Add icons to choices
-		// You need to implement texture manager to pick that texture from him
-		ImGui::BeginDisabled(this->mode != Mode::SPAWN);
-
-		ImGui::Text("Entity");
-		ImGui::RadioButton("Rock", (int*)(&this->choice), Entity::Type::ROCK);
-		ImGui::RadioButton("Paper", (int*)(&this->choice), Entity::Type::PAPER);
-		ImGui::RadioButton("Scissors", (int*)(&this->choice), Entity::Type::SCISSORS);
-
-		ImGui::Text("Quontity mode");
-		ImGui::RadioButton("Proportional to area spawn radius", reinterpret_cast<int*>(&this->quantity_mode), static_cast<int>(QuantityMode::PROPORTIONAL));
-		
-		ImGui::RadioButton("Linear", reinterpret_cast<int*>(&this->quantity_mode), static_cast<int>(QuantityMode::LINEAR));
-		
-		ImGui::BeginDisabled(this->quantity_mode != QuantityMode::LINEAR);
-		ImGui::InputInt("Quantity", &this->quantity);
-			
-		ImGui::EndDisabled();
-
-		ImGui::EndDisabled();
-
-		ImGui::End();
-	}
+		this->show_tools_menu();
 
 	if (!this->is_want_capture_mouse())
 		this->window.draw(spawn_area);
@@ -116,14 +80,51 @@ void GUI::display()
 	ImGui::SFML::Render(this->window);
 }
 
-bool GUI::is_want_capture_mouse() 
+bool GUI::is_want_capture_mouse()
 {
 	return ImGui::GetIO().WantCaptureMouse;
 }
 
-Entity::Type GUI::get_entity_type() 
-{	
+Entity::Type GUI::get_entity_type()
+{
 	if (mode != Mode::SPAWN)
 		return Entity::Type::UNKNOWN;
 	return choice;
+}
+
+void GUI::show_tools_menu()
+{
+	ImGui::Begin("Tools");
+
+	if (ImGui::Button("Clear All")) {
+		this->clear_all_entity = true;
+	}
+
+	ImGui::Text("Mode");
+
+	ImGui::RadioButton("Move", reinterpret_cast<int*>(&this->mode), static_cast<int>(Mode::MOVE_OR_DRAG));
+	ImGui::RadioButton("Spawn", reinterpret_cast<int*>(&this->mode), static_cast<int>(Mode::SPAWN));
+
+	//TODO: Add icons to choices
+	// You need to implement texture manager to pick that texture from him
+	ImGui::BeginDisabled(this->mode != Mode::SPAWN);
+
+	ImGui::Text("Entity");
+	ImGui::RadioButton("Rock", (int*)(&this->choice), Entity::Type::ROCK);
+	ImGui::RadioButton("Paper", (int*)(&this->choice), Entity::Type::PAPER);
+	ImGui::RadioButton("Scissors", (int*)(&this->choice), Entity::Type::SCISSORS);
+
+	ImGui::Text("Quontity mode");
+	ImGui::RadioButton("Proportional to area spawn radius", reinterpret_cast<int*>(&this->quantity_mode), static_cast<int>(QuantityMode::PROPORTIONAL));
+
+	ImGui::RadioButton("Linear", reinterpret_cast<int*>(&this->quantity_mode), static_cast<int>(QuantityMode::LINEAR));
+
+	ImGui::BeginDisabled(this->quantity_mode != QuantityMode::LINEAR);
+	ImGui::InputInt("Quantity", &this->quantity);
+
+	ImGui::EndDisabled();
+
+	ImGui::EndDisabled();
+
+	ImGui::End();
 }

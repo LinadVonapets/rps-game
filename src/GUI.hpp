@@ -8,7 +8,7 @@
 
 #include "Entity.hpp"
 
-class GUI 
+class GUI
 {
 	sf::RenderWindow& window;
 	bool show;
@@ -33,9 +33,11 @@ public:
 	void update(sf::Time dt);
 	void display();
 
-	bool is_want_capture_mouse(); 
+	bool is_want_capture_mouse();
 
 	Entity::Type get_entity_type();
+
+	void show_tools_menu();
 
 	float spawn_area_radius;
 	sf::CircleShape spawn_area;
