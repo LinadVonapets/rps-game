@@ -113,8 +113,8 @@ void Entity::update_direction()
 
 sf::Vector2f Entity::get_direction(bool hunter_flag)
 {
-	std::vector<float> distances;
-	std::vector<sf::Vector2f> directions;
+	float min_distance = std::numeric_limits<float>::max();
+	sf::Vector2f min_direction;
 
 	for(const auto& entity: Entity::table) {
 		float distance;
@@ -130,27 +130,27 @@ sf::Vector2f Entity::get_direction(bool hunter_flag)
 		{
 			if (this->loses_to(entity.type))
 			{
-				distances.push_back(distance);
-				directions.push_back(direction);
+				if (min_distance > distance)
+				{
+					min_distance = distance;
+					min_direction = direction;
+				}
 			}
 		}
 		else
 		{
 			if(this->beats(entity.type))
 			{
-				distances.push_back(distance);
-				directions.push_back(direction);
+				if (min_distance > distance)
+				{
+					min_distance = distance;
+					min_direction = direction;
+				}
 			}
 		}
 	}
 
-	if (!(distances.empty() || directions.empty()))
-	{
-		std::vector<float>::iterator it = std::min_element(distances.begin(), distances.end());
-		int index = std::distance(distances.begin(), it);
-		return directions[index];
-	}
-	return {0,0};
+	return min_direction;
 }
 
 void Entity::loadMedia()
