@@ -74,7 +74,7 @@ void Entity::collisions_with_walls(char direct)
 void Entity::move(sf::Time dt)
 {
 	m_pos = m_sprite.getPosition();
-	if (m_direction.length() != 0)
+	if (m_direction.lengthSquared() != 0)
 		m_direction = m_direction.normalized();
 
 	m_pos.x += m_direction.x * m_speed * dt.asSeconds();
