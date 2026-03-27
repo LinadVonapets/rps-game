@@ -19,7 +19,7 @@ private:
 public:
 	EntityGroupSystem();
 	void spawn_group(Entity::Type type, int amount, sf::Vector2f pos, float radius);
-	sf::Vector2f randomize_coord(float x, float y, float R_max);
+	sf::Vector2f get_randomized_coord(float p_x, float p_y, float p_max_radius);
 	double get_random(double begin, double end);
 	void update(sf::Time dt);
 
