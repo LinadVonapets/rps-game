@@ -13,6 +13,7 @@
 class Entity: public sf::Drawable
 {
 public:
+	using VectorPair = std::pair<sf::Vector2f, sf::Vector2f>;
 	enum Type
 	{
 		ROCK,
@@ -70,7 +71,8 @@ private:
 	void move(sf::Time dt);
 	void check_captured();
 	void update_direction();
-	sf::Vector2f get_direction(bool hunter_flag);
+	VectorPair get_direction();
+	void reset_direction_search();
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 

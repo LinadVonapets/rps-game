@@ -117,14 +117,13 @@ void Entity::check_captured()
 
 void Entity::update_direction()
 {
-	m_direction = get_direction(false) - get_direction(true);
+	this->reset_direction_search();
+	auto [victim_dir, hunter_dir] = get_direction();
+	m_direction = victim_dir - hunter_dir;
 }
 
-sf::Vector2f Entity::get_direction(bool hunter_flag)
+Entity::VectorPair Entity::get_direction()
 {
-	float min_distance = std::numeric_limits<float>::max();
-	sf::Vector2f min_direction;
-
 	for(const auto& entity: Entity::table) {
 		float distance;
 		sf::Vector2f direction = {0,0};
@@ -135,31 +134,35 @@ sf::Vector2f Entity::get_direction(bool hunter_flag)
 		if(distance > 0)
 			direction = difference; 
 
-		if (hunter_flag)
+		
+		if (this->loses_to(entity.type))
 		{
-			if (this->loses_to(entity.type))
+			if (hunter_min_dist > distance)
 			{
-				if (min_distance > distance)
-				{
-					min_distance = distance;
-					min_direction = direction;
-				}
+				hunter_min_dist = distance;
+				hunter_min_dist_dir = direction;
 			}
 		}
-		else
+		else if(this->beats(entity.type))
 		{
-			if(this->beats(entity.type))
+			if (victim_min_dist > distance)
 			{
-				if (min_distance > distance)
-				{
-					min_distance = distance;
-					min_direction = direction;
-				}
+				victim_min_dist = distance;
+				victim_min_dist_dir = direction;
 			}
 		}
+		
 	}
 
-	return min_direction.normalized();
+	return {victim_min_dist_dir.normalized(), hunter_min_dist_dir.normalized()};
+}
+
+void Entity::reset_direction_search()
+{
+	this->hunter_min_dist = std::numeric_limits<float>::max();
+	this->victim_min_dist = this->hunter_min_dist;
+	this->hunter_min_dist_dir = {0, 0};
+	this->victim_min_dist_dir = {0, 0};
 }
 
 void Entity::loadMedia()
