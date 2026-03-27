@@ -150,7 +150,7 @@ sf::Vector2f Entity::get_direction(bool hunter_flag)
 		}
 	}
 
-	return min_direction;
+	return min_direction.normalized();
 }
 
 void Entity::loadMedia()
