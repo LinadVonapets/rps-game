@@ -33,8 +33,7 @@ private:
 	static inline std::array<sf::SoundBuffer, Type::ALL> m_soundbuffers;
 	static inline int m_id_counter{0};
 	
-	float m_speed = 80;
-
+	
 	//----------------------------------------------------------------//
 	// Do not change order of these fields, because we initialize them 
 	// in member initializer list exactly in the order they are declared here
@@ -44,7 +43,7 @@ private:
 	sf::Vector2f m_direction;
 	int m_id;
 	//----------------------------------------------------------------//
-
+	float m_speed = 80;
 	sf::Vector2f m_pos;
 
 public:

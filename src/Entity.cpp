@@ -17,6 +17,8 @@ Entity::Entity(const Entity& value)
 	, m_sound{value.m_sound}
 	, m_direction{value.m_direction}
 	, m_id{value.m_id}
+	, m_speed{value.m_speed}
+	, m_pos{value.m_pos}
 {
 	update_table();
 }
