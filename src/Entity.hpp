@@ -46,6 +46,11 @@ private:
 	float m_speed = 80;
 	sf::Vector2f m_pos;
 
+	float hunter_min_dist;
+	float victim_min_dist;
+	sf::Vector2f hunter_min_dist_dir;
+	sf::Vector2f victim_min_dist_dir;
+
 public:
 	Entity(Type type);
 	Entity(const Entity& value);

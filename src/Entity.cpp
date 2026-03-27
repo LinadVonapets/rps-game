@@ -7,6 +7,8 @@ Entity::Entity(Type type)
 {
 	this->m_type = type;
 	this->m_id = m_id_counter++;
+	this->hunter_min_dist = std::numeric_limits<float>::max();
+	this->victim_min_dist = std::numeric_limits<float>::max();
 
 	m_sprite.setScale(sf::Vector2f(0.2, 0.2));
 	table.push_back({m_type, m_sprite.getGlobalBounds()});
@@ -17,10 +19,14 @@ Entity::Entity(const Entity& value)
 	, m_sound{value.m_sound}
 	, m_direction{value.m_direction}
 	, m_pos{value.m_pos}
+	, hunter_min_dist_dir{value.hunter_min_dist_dir}
+	, victim_min_dist_dir{value.victim_min_dist_dir}
 {
 	this->m_type = value.m_type;
 	this->m_id = value.m_id;
 	this->m_speed = value.m_speed;
+	this->hunter_min_dist = value.hunter_min_dist;
+	this->victim_min_dist = value.victim_min_dist;
 	update_table();
 }
 
