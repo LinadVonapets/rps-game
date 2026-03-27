@@ -46,7 +46,7 @@ void Core::run()
 		window.draw(entity_group_system);
 
 		user_interface.display();
-		this->window.display();
+		window.display();
 	}
 }
 
@@ -60,30 +60,30 @@ GUI& Core::get_user_interface()
 	return this->user_interface;
 }
 
-void Core::message_to_title(sf::String msg)
+void Core::message_to_title(sf::String p_message)
 {
-	this->window.setTitle(this->window_title + ": [" + msg + "]");
+	this->window.setTitle(this->window_title + ": [" + p_message + "]");
 }
 
-void Core::message_to_stdout(sf::String msg)
+void Core::message_to_stdout(sf::String p_message)
 {
-	std::cout << msg.toAnsiString() << std::endl;
+	std::cout << p_message.toAnsiString() << std::endl;
 }
 
-void Core::message_to_all_output(sf::String msg)
+void Core::message_to_all_output(sf::String p_message)
 {
-	this->message_to_title(msg);
-	this->message_to_stdout(msg);
+	this->message_to_title(p_message);
+	this->message_to_stdout(p_message);
 };
 
-void Core::process_events(const std::optional<sf::Event> event)
+void Core::process_events(const std::optional<sf::Event> p_event)
 {
-	user_interface.process_events(event);
-	if (event->is<sf::Event::Closed>())
+	user_interface.process_events(p_event);
+	if (p_event->is<sf::Event::Closed>())
 	{
 		this->window.close();
 	}
-	else if (const auto* MouseKey = event->getIf<sf::Event::MouseButtonPressed>())
+	else if (const auto* MouseKey = p_event->getIf<sf::Event::MouseButtonPressed>())
 	{
 		if ((MouseKey->button == sf::Mouse::Button::Left) && !user_interface.is_want_capture_mouse()) 
 		{

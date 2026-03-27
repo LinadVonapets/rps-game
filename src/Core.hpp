@@ -41,13 +41,13 @@ public:
 	const sf::Rect<std::uint32_t>& get_window_rect();
 	GUI& get_user_interface();
 
-	void message_to_title(sf::String msg);
-	void message_to_stdout(sf::String msg);
-	void message_to_all_output(sf::String msg);
+	void message_to_title(sf::String p_message);
+	void message_to_stdout(sf::String p_message);
+	void message_to_all_output(sf::String p_message);
 
 private:
 
-	void process_events(const std::optional<sf::Event> event);
+	void process_events(const std::optional<sf::Event> p_event);
 
 	Core(const Core&) = delete;
 	Core& operator=(const Core&) = delete;
