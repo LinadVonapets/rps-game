@@ -54,7 +54,7 @@ private:
 
 public:
 	Entity(Type type);
-	Entity(const Entity& value);
+	Entity(const Entity& p_other);
 	void update(sf::Time dt);
 	void setPos(float x, float y);
 	void setPos(sf::Vector2f pos);

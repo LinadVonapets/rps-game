@@ -14,19 +14,19 @@ Entity::Entity(Type type)
 	table.push_back({m_type, m_sprite.getGlobalBounds()});
 }
 
-Entity::Entity(const Entity& value)
-	: m_sprite(value.m_sprite)
-	, m_sound{value.m_sound}
-	, m_direction{value.m_direction}
-	, m_pos{value.m_pos}
-	, hunter_min_dist_dir{value.hunter_min_dist_dir}
-	, victim_min_dist_dir{value.victim_min_dist_dir}
+Entity::Entity(const Entity& p_other)
+	: m_sprite(p_other.m_sprite)
+	, m_sound{p_other.m_sound}
+	, m_direction{p_other.m_direction}
+	, m_pos{p_other.m_pos}
+	, hunter_min_dist_dir{p_other.hunter_min_dist_dir}
+	, victim_min_dist_dir{p_other.victim_min_dist_dir}
 {
-	this->m_type = value.m_type;
-	this->m_id = value.m_id;
-	this->m_speed = value.m_speed;
-	this->hunter_min_dist = value.hunter_min_dist;
-	this->victim_min_dist = value.victim_min_dist;
+	this->m_type = p_other.m_type;
+	this->m_id = p_other.m_id;
+	this->m_speed = p_other.m_speed;
+	this->hunter_min_dist = p_other.hunter_min_dist;
+	this->victim_min_dist = p_other.victim_min_dist;
 	update_table();
 }
 
