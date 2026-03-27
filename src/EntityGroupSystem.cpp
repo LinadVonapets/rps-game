@@ -7,17 +7,17 @@ EntityGroupSystem::EntityGroupSystem()
 {
 }
 
-void EntityGroupSystem::spawn_group(Entity::Type type, int amount, sf::Vector2f pos, float radius)
+void EntityGroupSystem::spawn_group(Entity::Type p_type, int p_amount, sf::Vector2f p_pos, float p_radius)
 {
-	if (type == Entity::Type::UNKNOWN)
+	if (p_type == Entity::Type::UNKNOWN)
 	{
 		std::cerr << "EntityGroupSystem::spawn_group: UNKNOWN type specified!" << std::endl;
 		return;
 	}
 		
-	for(int i = 0; i < amount; ++i) {
-		Entity temp(type);
-		temp.setPos(this->get_randomized_coord(pos.x, pos.y, radius));
+	for(int i = 0; i < p_amount; ++i) {
+		Entity temp(p_type);
+		temp.setPos(this->get_randomized_coord(p_pos.x, p_pos.y, p_radius));
 		this->entities.push_back(temp);
 	}
 }
@@ -36,13 +36,13 @@ sf::Vector2f EntityGroupSystem::get_randomized_coord(float p_x, float p_y, float
 	return {x_offseted, y_offseted};
 }
 
-double EntityGroupSystem::get_random(double begin, double end)
+double EntityGroupSystem::get_random(double p_from, double p_to)
 {
-	std::uniform_real_distribution<> dist(begin, end);
+	std::uniform_real_distribution<> dist(p_from, p_to);
 	return dist(random_engine);
 }
 
-void EntityGroupSystem::update(sf::Time dt)
+void EntityGroupSystem::update(sf::Time p_dt)
 {
 	if (Core::get_instance().get_user_interface().clear_all_entity)
 	{
@@ -51,7 +51,7 @@ void EntityGroupSystem::update(sf::Time dt)
 		Core::get_instance().get_user_interface().clear_all_entity = false;
 	}
 	for(Entity& entity: this->entities)
-		entity.update(dt);
+		entity.update(p_dt);
 }
 
 void EntityGroupSystem::draw(sf::RenderTarget& target, sf::RenderStates states) const

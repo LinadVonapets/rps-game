@@ -18,10 +18,10 @@ private:
 
 public:
 	EntityGroupSystem();
-	void spawn_group(Entity::Type type, int amount, sf::Vector2f pos, float radius);
+	void spawn_group(Entity::Type p_type, int p_amount, sf::Vector2f p_pos, float p_radius);
 	sf::Vector2f get_randomized_coord(float p_x, float p_y, float p_max_radius);
-	double get_random(double begin, double end);
-	void update(sf::Time dt);
+	double get_random(double p_from, double p_to);
+	void update(sf::Time p_dt);
 
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
