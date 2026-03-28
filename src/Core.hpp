@@ -9,13 +9,13 @@
 #include "EntityGroupSystem.hpp"
 #include "GUI.hpp"
 
-class Core 
+class Core
 {
 private:
 	static inline Core* instance = nullptr;
-	
+
 	//----------------------------------------------------------------//
-	// Do not change order of these fields, because we initialize them 
+	// Do not change order of these fields, because we initialize them
 	// in member initializer list exactly in the order they are declared here
 
 	sf::String window_title;

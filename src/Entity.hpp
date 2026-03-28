@@ -32,10 +32,10 @@ private:
 	static inline std::array<sf::Texture, Type::ALL> m_texturebuffers;
 	static inline std::array<sf::SoundBuffer, Type::ALL> m_soundbuffers;
 	static inline int m_id_counter{0};
-	
-	
+
+
 	//----------------------------------------------------------------//
-	// Do not change order of these fields, because we initialize them 
+	// Do not change order of these fields, because we initialize them
 	// in member initializer list exactly in the order they are declared here
 	Type m_type;
 	sf::Sprite m_sprite;

@@ -131,7 +131,7 @@ bool Entity::loses_to(const Entity::Type attacker)
 	return ret;
 }
 
-// inefficiant method, need to find another solution 
+// inefficiant method, need to find another solution
 void Entity::update_table()
 {
 	table[m_id] = {m_type, m_sprite.getGlobalBounds()};
@@ -175,7 +175,7 @@ void Entity::move(sf::Time dt)
 }
 
 void Entity::check_captured(const Entity::Pair& p_entity_pair)
-{	
+{
 	if(collide(p_entity_pair.rect))
 	{
 		if(this->loses_to(p_entity_pair.type))
@@ -214,9 +214,9 @@ void Entity::do_direction_search(const Entity::Pair& p_entity_pair)
 
 	distance = difference.lengthSquared();
 	if(distance > 0)
-		direction = difference; 
+		direction = difference;
 
-	
+
 	if (this->loses_to(p_entity_pair.type))
 	{
 		if (this->hunter_min_dist > distance)

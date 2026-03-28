@@ -31,7 +31,7 @@ FetchContent_Declare(
 	imgui-sfml
 	GIT_REPOSITORY https://github.com/SFML/imgui-sfml.git
 	GIT_TAG v3.0
-	GIT_SHALLOW ON 
+	GIT_SHALLOW ON
 	GIT_PROGRESS TRUE
 	EXCLUDE_FROM_ALL
 	SYSTEM
@@ -49,7 +49,7 @@ add_custom_target(copy_assets
 	COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_LIST_DIR}/copy-assets.cmake
 )
 
-add_executable(${PROJECT_NAME} 
+add_executable(${PROJECT_NAME}
 	src/main.cpp
 	src/Entity.cpp
 	src/EntityGroupSystem.cpp
@@ -66,7 +66,7 @@ target_link_libraries(
 	SFML::Window
 	SFML::Network
 	ImGui-SFML::ImGui-SFML
-) 
+)
 
 target_compile_options(${PROJECT_NAME} PRIVATE $<$<COMPILE_LANG_AND_ID:CXX,GNU,Clang,AppleClang>:-Wall -Wextra -Wpedantic>)
 

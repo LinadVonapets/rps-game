@@ -3,7 +3,7 @@
 #include <imgui.h>
 #include <imgui-SFML.h>
 
-Core& Core::get_instance() 
+Core& Core::get_instance()
 {
 	if (!instance) {
 		instance = new Core();
@@ -11,8 +11,8 @@ Core& Core::get_instance()
 	return *instance;
 }
 
-Core::Core() 
-	: 
+Core::Core()
+	:
 	window_title{"rps_life"},
 	window_rect({0, 0}, {800, 600}),
 	window(sf::VideoMode(window_rect.size), window_title),
@@ -50,7 +50,7 @@ void Core::run()
 	}
 }
 
-const sf::Rect<std::uint32_t>& Core::get_window_rect() 
+const sf::Rect<std::uint32_t>& Core::get_window_rect()
 {
 	return this->window_rect;
 }
@@ -85,12 +85,12 @@ void Core::process_events(const std::optional<sf::Event> p_event)
 	}
 	else if (const auto* MouseKey = p_event->getIf<sf::Event::MouseButtonPressed>())
 	{
-		if ((MouseKey->button == sf::Mouse::Button::Left) && !user_interface.is_want_capture_mouse()) 
+		if ((MouseKey->button == sf::Mouse::Button::Left) && !user_interface.is_want_capture_mouse())
 		{
 			entity_group_system.spawn_group(
-				user_interface.get_entity_type(), 
-				user_interface.quantity, 
-				sf::Vector2f(MouseKey->position), 
+				user_interface.get_entity_type(),
+				user_interface.quantity,
+				sf::Vector2f(MouseKey->position),
 				user_interface.spawn_area_radius
 			);
 		}
