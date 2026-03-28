@@ -5,13 +5,13 @@ Entity::Entity(Type type)
 	: m_sprite(m_texturebuffers[type])
 	, m_sound(m_soundbuffers[type])
 {
+	this->entity_group_system = nullptr;
 	this->m_type = type;
-	this->m_id = m_id_counter++;
+	this->m_id = 0;
 	this->hunter_min_dist = std::numeric_limits<float>::max();
 	this->victim_min_dist = std::numeric_limits<float>::max();
 
 	m_sprite.setScale(sf::Vector2f(0.2, 0.2));
-	table.push_back({m_type, m_sprite.getGlobalBounds()});
 }
 
 Entity::Entity(const Entity& p_other)
@@ -22,6 +22,7 @@ Entity::Entity(const Entity& p_other)
 	, hunter_min_dist_dir{p_other.hunter_min_dist_dir}
 	, victim_min_dist_dir{p_other.victim_min_dist_dir}
 {
+	this->entity_group_system = p_other.entity_group_system;
 	this->m_type = p_other.m_type;
 	this->m_id = p_other.m_id;
 	this->m_speed = p_other.m_speed;
@@ -29,21 +30,24 @@ Entity::Entity(const Entity& p_other)
 	this->victim_min_dist = p_other.victim_min_dist;
 	this->hunter_direction = p_other.hunter_direction;
 	this->victim_direction = p_other.victim_direction;
-	update_table();
 }
 
 void Entity::update(sf::Time dt)
 {
 	this->reset_direction_search();
-	for (const auto& entity: Entity::table)
+
+	for (size_t i = 0; i < entity_group_system->get_next_id(); i++)
 	{
-		this->check_captured(entity);
-		this->do_direction_search(entity);
+		auto entity = entity_group_system->get_entity_by_id(i);
+		if (!entity.has_value() || m_id == entity->get().m_id)
+			continue;
+
+		this->check_captured(entity->get());
+		this->do_direction_search(entity->get());
 
 	}
 	this->update_direction();
 	this->move(dt);
-	this->update_table();
 }
 
 void Entity::setPos(float x, float y)
@@ -87,12 +91,6 @@ void Entity::loadMedia()
 	}
 }
 
-void Entity::clear_table()
-{
-	m_id_counter = 0;
-	table.clear();
-}
-
 bool Entity::beats(const Entity::Type defender)
 {
 	bool ret = false;
@@ -133,15 +131,23 @@ bool Entity::loses_to(const Entity::Type attacker)
 	return ret;
 }
 
-// inefficiant method, need to find another solution
-void Entity::update_table()
+void Entity::set_id(size_t p_id)
 {
-	table[m_id] = {m_type, m_sprite.getGlobalBounds()};
+	if (this->m_id != p_id)
+		this->m_id = p_id;
 }
 
-bool Entity::collide(const sf::FloatRect& rect) const
+void Entity::set_entity_group_system(EntityGroupSystem* p_entity_group_system)
 {
-	return m_sprite.getGlobalBounds().findIntersection(rect).has_value();
+	if(this->entity_group_system != p_entity_group_system)
+		this->entity_group_system = p_entity_group_system;
+}
+
+bool Entity::collide(const Entity& p_other) const
+{
+	sf::FloatRect our_rect = this->m_sprite.getGlobalBounds();
+	sf::FloatRect other_rect = p_other.m_sprite.getGlobalBounds();
+	return our_rect.findIntersection(other_rect).has_value();
 }
 
 void Entity::collisions_with_walls(char direct)
@@ -176,18 +182,18 @@ void Entity::move(sf::Time dt)
 	m_sprite.setPosition(m_pos);
 }
 
-void Entity::check_captured(const Entity::Pair& p_entity_pair)
+void Entity::check_captured(const Entity& p_other)
 {
-	if(collide(p_entity_pair.rect))
+	if(collide(p_other))
 	{
-		if(this->loses_to(p_entity_pair.type))
+		if(this->loses_to(p_other.m_type))
 		{
-			m_type = p_entity_pair.type;
+			m_type = p_other.m_type;
 			m_sound.setBuffer(m_soundbuffers[m_type]);
 			m_sprite.setTexture(m_texturebuffers[m_type]);
 		}
 
-		if(this->beats(p_entity_pair.type))
+		if(this->beats(p_other.m_type))
 		{
 			m_sound.play();
 		}
@@ -207,19 +213,19 @@ void Entity::update_direction()
 	this->m_direction = this->victim_direction - hunter_direction;
 }
 
-void Entity::do_direction_search(const Entity::Pair& p_entity_pair)
+void Entity::do_direction_search(const Entity& p_other)
 {
 	float distance;
 	sf::Vector2f direction = {0,0};
 
-	sf::Vector2f difference = (p_entity_pair.rect.position - m_sprite.getPosition());
+	sf::Vector2f difference = (p_other.m_pos - m_pos);
 
 	distance = difference.lengthSquared();
 	if(distance > 0)
 		direction = difference;
 
 
-	if (this->loses_to(p_entity_pair.type))
+	if (this->loses_to(p_other.m_type))
 	{
 		if (this->hunter_min_dist > distance)
 		{
@@ -227,7 +233,7 @@ void Entity::do_direction_search(const Entity::Pair& p_entity_pair)
 			this->hunter_min_dist_dir = direction;
 		}
 	}
-	else if(this->beats(p_entity_pair.type))
+	else if(this->beats(p_other.m_type))
 	{
 		if (this->victim_min_dist > distance)
 		{

@@ -18,8 +18,29 @@ void EntityGroupSystem::spawn_group(Entity::Type p_type, int p_amount, sf::Vecto
 	for(int i = 0; i < p_amount; ++i) {
 		Entity temp(p_type);
 		temp.setPos(this->get_randomized_coord(p_pos.x, p_pos.y, p_radius));
-		this->entities.push_back(temp);
+		this->add_entity(std::move(temp));
 	}
+}
+
+size_t EntityGroupSystem::add_entity(Entity&& p_entity)
+{
+	size_t new_id = this->get_next_id();
+	p_entity.set_id(new_id);
+	p_entity.set_entity_group_system(this);
+	entities.push_back(p_entity);
+	return new_id;
+}
+
+std::optional<std::reference_wrapper<Entity>> EntityGroupSystem::get_entity_by_id(size_t p_id)
+{
+	if (p_id < this->get_next_id())
+		return std::make_optional<EntityRef>(std::ref(entities[p_id]));
+	return std::nullopt;
+}
+
+size_t EntityGroupSystem::get_next_id() const
+{
+	return entities.size();
 }
 
 sf::Vector2f EntityGroupSystem::get_randomized_coord(float p_x, float p_y, float p_max_radius)
@@ -47,7 +68,6 @@ void EntityGroupSystem::update(sf::Time p_dt)
 	if (Core::get_instance().get_user_interface().clear_all_entity)
 	{
 		this->entities.clear();
-		Entity::clear_table();
 		Core::get_instance().get_user_interface().clear_all_entity = false;
 	}
 	for(Entity& entity: this->entities)

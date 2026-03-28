@@ -10,6 +10,8 @@
 #include <functional>
 #include <algorithm>
 
+class EntityGroupSystem;
+
 class Entity: public sf::Drawable
 {
 public:
@@ -21,18 +23,10 @@ public:
 		UNKNOWN,
 		ALL
 	};
-	struct Pair
-	{
-		Type type;
-		sf::FloatRect rect;
-	};
 
 private:
-	static inline std::vector<Entity::Pair> table{};
 	static inline std::array<sf::Texture, Type::ALL> m_texturebuffers;
 	static inline std::array<sf::SoundBuffer, Type::ALL> m_soundbuffers;
-	static inline int m_id_counter{0};
-
 
 	//----------------------------------------------------------------//
 	// Do not change order of these fields, because we initialize them
@@ -41,8 +35,10 @@ private:
 	sf::Sprite m_sprite;
 	sf::Sound m_sound;
 	sf::Vector2f m_direction;
-	int m_id;
+	size_t m_id;
 	//----------------------------------------------------------------//
+	EntityGroupSystem* entity_group_system = nullptr;
+
 	float m_speed = 80;
 	sf::Vector2f m_pos;
 
@@ -56,27 +52,34 @@ private:
 	sf::Vector2f victim_direction;
 
 public:
+	// Нужен ли конструктор перемещения?
 	explicit Entity(Type type);
 	Entity(const Entity& p_other);
 	void update(sf::Time dt);
 	void setPos(float x, float y);
 	void setPos(sf::Vector2f pos);
 	static void loadMedia();
-	static void clear_table();
 
 private:
 	bool beats(const Type defender);
 	bool loses_to(const Type attacker);
 
-	void update_table();
-	bool collide(const sf::FloatRect& rect) const;
+	void set_id(size_t p_id);
+	void set_entity_group_system(EntityGroupSystem* p_entity_group_system);
+
+	bool collide(const Entity& p_other) const;
 	void collisions_with_walls(char direct);
+
 	void move(sf::Time dt);
-	void check_captured(const Entity::Pair& p_enitty_pair);
+	void check_captured(const Entity& p_other);
+
 	void update_direction();
-	void do_direction_search(const Entity::Pair& p_entity_pair);
+	void do_direction_search(const Entity& p_other);
 	void reset_direction_search();
+
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
+	friend class EntityGroupSystem;
 };
 
 #endif
