@@ -56,7 +56,7 @@ private:
 	sf::Vector2f victim_direction;
 
 public:
-	Entity(Type type);
+	explicit Entity(Type type);
 	Entity(const Entity& p_other);
 	void update(sf::Time dt);
 	void setPos(float x, float y);
