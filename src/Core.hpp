@@ -31,6 +31,10 @@ private:
 	sf::Clock delta_clock;
 	sf::Time delta_time;
 
+	sf::Clock fps_refresh_timer;
+	double real_fps;
+	double fps;
+
 public:
 	static Core& get_instance();
 
@@ -45,7 +49,11 @@ public:
 	void message_to_stdout(sf::String p_message);
 	void message_to_all_output(sf::String p_message);
 
+	double get_fps(sf::Time refresh_rate);
+
 private:
+	void count_dt();
+	void count_fps();
 
 	void process_events(const std::optional<sf::Event> p_event);
 

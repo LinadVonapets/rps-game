@@ -34,7 +34,7 @@ void Core::run()
 
 	while(this->window.isOpen())
 	{
-		this->delta_time = this->delta_clock.restart();
+		this->count_dt();
 		while(const std::optional event = window.pollEvent())
 			this->process_events(event);
 
@@ -47,6 +47,7 @@ void Core::run()
 
 		user_interface.display();
 		window.display();
+		this->count_fps();
 	}
 }
 
@@ -75,6 +76,28 @@ void Core::message_to_all_output(sf::String p_message)
 	this->message_to_title(p_message);
 	this->message_to_stdout(p_message);
 };
+
+double Core::get_fps(sf::Time refresh_rate)
+{
+	if (this->fps_refresh_timer.getElapsedTime() >= refresh_rate)
+	{
+		this->fps = this->real_fps;
+		this->fps_refresh_timer.restart();
+	}
+	return this->fps;
+}
+
+void Core::count_dt()
+{
+	this->delta_time = this->delta_clock.restart();
+}
+
+void Core::count_fps()
+{
+	float dt = this->delta_time.asSeconds();
+	if (dt > 0)
+		this->real_fps = 1 / dt;
+}
 
 void Core::process_events(const std::optional<sf::Event> p_event)
 {
