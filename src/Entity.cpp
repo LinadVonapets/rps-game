@@ -60,28 +60,30 @@ void Entity::setPos(sf::Vector2f pos)
 
 void Entity::loadMedia()
 {
-	if(!m_texturebuffers[Entity::ROCK].loadFromFile("assets/rock.png")) {
-		std::cout << "Failed to load texture: 'assets/rock.png'\n";
-	}
+	std::string image_path[Entity::Type::ALL] =
+	{
+		"assets/images/rock.png",
+		"assets/images/paper.png",
+		"assets/images/scissors.png",
+		"assets/images/lost.png",
+	};
 
-	if(!m_texturebuffers[Entity::PAPER].loadFromFile("assets/paper.png")) {
-		std::cout << "Failed to load texture: 'assets/paper.png'\n";
-	}
+	std::string sound_path[Entity::Type::ALL] =
+	{
+		"assets/sounds/rock.wav",
+		"assets/sounds/paper.wav",
+		"assets/sounds/scissors.wav",
+		"assets/sounds/lost.wav"
+	};
 
-	if(!m_texturebuffers[Entity::SCISSORS].loadFromFile("assets/scissors.png")) {
-		std::cout << "Failed to load texture: 'assets/scissors.png'\n";
-	}
-
-	if(!m_soundbuffers[Entity::ROCK].loadFromFile("assets/rock.wav")) {
-		std::cout << "Failed to load sound: 'assets/rock.wav'\n";
-	}
-
-	if(!m_soundbuffers[Entity::PAPER].loadFromFile("assets/paper.wav")) {
-		std::cout << "Failed to load sound: 'assets/paper.wav'\n";
-	}
-
-	if(!m_soundbuffers[Entity::SCISSORS].loadFromFile("assets/scissors.wav")) {
-		std::cout << "Failed to load sound: 'assets/scissors.wav'\n";
+	for(int i = 0; i < Entity::Type::ALL; i++)
+	{
+		if(!m_texturebuffers[Entity::Type(i)].loadFromFile(image_path[i])) {
+			std::cerr << "Failed to load texture: " << "'" << image_path[i] << "'" << std::endl;
+		}
+		if(!m_soundbuffers[Entity::Type(i)].loadFromFile(sound_path[i])) {
+			std::cerr << "Failed to load sound: " << "'" << sound_path[i] << "'" << std::endl;
+		}
 	}
 }
 
