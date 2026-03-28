@@ -61,6 +61,11 @@ GUI& Core::get_user_interface()
 	return this->user_interface;
 }
 
+EntityGroupSystem& Core::get_entity_group_system()
+{
+	return this->entity_group_system;
+}
+
 void Core::message_to_title(sf::String p_message)
 {
 	this->window.setTitle(this->window_title + ": [" + p_message + "]");

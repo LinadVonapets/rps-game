@@ -6,8 +6,11 @@
 #include <imgui.h>
 #include <imgui-SFML.h>
 
+#include "Core.hpp"
+
 GUI::GUI(sf::RenderWindow& window)
 	: window{window}
+	, entity_count(font)
 {
 	if(!ImGui::SFML::Init(window))
 	{
@@ -27,6 +30,14 @@ GUI::GUI(sf::RenderWindow& window)
 	this->spawn_area.setOutlineColor(sf::Color(255, 0, 0, 128));
 
 	this->clear_all_entity = false;
+
+	if (!this->font.openFromFile("assets/fonts/fixedsys.ttf"))
+	{
+		std::cerr << "GUI::GUI: Can't load font" << std::endl;
+	}
+
+	this->entity_count.setFillColor(sf::Color::Black);
+	this->entity_count.setCharacterSize(24);
 }
 
 void GUI::process_events(const std::optional<sf::Event> event)
@@ -71,6 +82,17 @@ void GUI::update(sf::Time dt)
 
 void GUI::display()
 {
+	int fps = static_cast<int>(Core::get_instance().get_fps(sf::seconds(2)));
+
+	entity_count.setString(sf::String("FPS: ") + std::to_string(fps));
+	entity_count.setPosition({0, 25});
+	this->window.draw(entity_count);
+
+
+	entity_count.setPosition({0, 0});
+	entity_count.setString(sf::String("Entity count: ") + std::to_string(Core::get_instance().get_entity_group_system().get_next_id()));
+	this->window.draw(entity_count);
+
 	if(this->show)
 		this->show_tools_menu();
 

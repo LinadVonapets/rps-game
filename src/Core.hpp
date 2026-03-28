@@ -44,6 +44,7 @@ public:
 	void run();
 	const sf::Rect<std::uint32_t>& get_window_rect();
 	GUI& get_user_interface();
+	EntityGroupSystem& get_entity_group_system();
 
 	void message_to_title(sf::String p_message);
 	void message_to_stdout(sf::String p_message);

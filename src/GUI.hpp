@@ -27,6 +27,9 @@ class GUI
 
 	Entity::Type choice;
 
+	sf::Font font;
+	sf::Text entity_count;
+
 public:
 	explicit GUI(sf::RenderWindow& window);
 	void process_events(const std::optional<sf::Event> event);
