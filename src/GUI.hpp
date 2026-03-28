@@ -28,7 +28,7 @@ class GUI
 	Entity::Type choice;
 
 public:
-	GUI(sf::RenderWindow& window);
+	explicit GUI(sf::RenderWindow& window);
 	void process_events(const std::optional<sf::Event> event);
 	void update(sf::Time dt);
 	void display();
