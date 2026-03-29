@@ -14,7 +14,7 @@ Core& Core::get_instance()
 Core::Core()
 	:
 	window_title{"rps_life"},
-	window_rect({0, 0}, {800, 600}),
+	window_rect({0, 0}, {1280, 720}),
 	window(sf::VideoMode(window_rect.size), window_title),
 	user_interface(window)
 {
