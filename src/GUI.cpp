@@ -82,7 +82,7 @@ void GUI::update(sf::Time dt)
 
 void GUI::display()
 {
-	int fps = static_cast<int>(Core::get_instance().get_fps(sf::seconds(2)));
+	int fps = static_cast<int>(Core::get()->get_fps(sf::seconds(2)));
 
 	entity_count.setString(sf::String("FPS: ") + std::to_string(fps));
 	entity_count.setPosition({0, 25});
@@ -90,7 +90,7 @@ void GUI::display()
 
 
 	entity_count.setPosition({0, 0});
-	entity_count.setString(sf::String("Entity count: ") + std::to_string(Core::get_instance().get_entity_group_system().get_next_id()));
+	entity_count.setString(sf::String("Entity count: ") + std::to_string(Core::get()->get_entity_group_system().get_next_id()));
 	this->window.draw(entity_count);
 
 	if(this->show)

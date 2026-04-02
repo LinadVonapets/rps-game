@@ -12,7 +12,7 @@
 class Core
 {
 private:
-	static inline Core* instance = nullptr;
+	static inline std::unique_ptr<Core> instance = nullptr;
 
 	//----------------------------------------------------------------//
 	// Do not change order of these fields, because we initialize them
@@ -36,7 +36,7 @@ private:
 	double fps;
 
 public:
-	static Core& get_instance();
+	static Core* get();
 
 	Core();
 	virtual ~Core() = default;

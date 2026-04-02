@@ -152,7 +152,7 @@ bool Entity::collide(const Entity& p_other) const
 
 void Entity::collisions_with_walls(char direct)
 {
-	sf::Rect<std::uint32_t> win_rect = Core::get_instance().get_window_rect();
+	sf::Rect<std::uint32_t> win_rect = Core::get()->get_window_rect();
 	if (direct == 'w')
 	{
 		if (m_pos.x + m_sprite.getGlobalBounds().size.x > win_rect.size.x)

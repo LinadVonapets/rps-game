@@ -2,6 +2,6 @@
 
 int main()
 {
-	Core& core = Core::get_instance();
-	core.run();
+	Core* core = Core::get();
+	core->run();
 }

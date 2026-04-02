@@ -65,10 +65,10 @@ double EntityGroupSystem::get_random(double p_from, double p_to)
 
 void EntityGroupSystem::update(sf::Time p_dt)
 {
-	if (Core::get_instance().get_user_interface().clear_all_entity)
+	if (Core::get()->get_user_interface().clear_all_entity)
 	{
 		this->entities.clear();
-		Core::get_instance().get_user_interface().clear_all_entity = false;
+		Core::get()->get_user_interface().clear_all_entity = false;
 	}
 	for(Entity& entity: this->entities)
 		entity.update(p_dt);

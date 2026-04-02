@@ -3,12 +3,13 @@
 #include <imgui.h>
 #include <imgui-SFML.h>
 
-Core& Core::get_instance()
+Core* Core::get()
 {
-	if (!instance) {
-		instance = new Core();
+	if(instance == nullptr)
+	{
+		instance = std::make_unique<Core>();
 	}
-	return *instance;
+	return instance.get();
 }
 
 Core::Core()
