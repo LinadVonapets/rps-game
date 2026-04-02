@@ -55,6 +55,7 @@ add_executable(${PROJECT_NAME}
 	src/EntityGroupSystem.cpp
 	src/Core.cpp
 	src/GUI.cpp
+	src/ResourceManager.cpp
 )
 
 target_link_libraries(

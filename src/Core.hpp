@@ -8,6 +8,7 @@
 #include "Entity.hpp"
 #include "EntityGroupSystem.hpp"
 #include "GUI.hpp"
+#include "ResourceManager.hpp"
 
 class Core
 {
@@ -24,9 +25,11 @@ private:
 	GUI user_interface;
 	//----------------------------------------------------------------//
 
-	EntityGroupSystem entity_group_system;
+	TextureManager texture_manager;
 
+	EntityGroupSystem entity_group_system;
 	Entity::Type spawn_type;
+
 
 	sf::Clock delta_clock;
 	sf::Time delta_time;
