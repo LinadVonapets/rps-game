@@ -8,6 +8,8 @@
 #include <iostream>
 
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
 
 template<typename T>
 class ResourceManager
@@ -66,6 +68,17 @@ class TextureManager: public ResourceManager<sf::Texture>
 {
 public:
 	bool load_from_file(sf::Texture* p_texture, const std::string& p_path) override;
+};
+
+class SoundManager: public ResourceManager<sf::SoundBuffer>
+{
+public:
+	bool load_from_file(sf::SoundBuffer* p_sound_buffer, const std::string& p_path) override;
+};
+
+class FontManager: public ResourceManager<sf::Font>
+{
+	bool load_from_file(sf::Font* p_font, const std::string& p_path) override;
 };
 
 #endif
