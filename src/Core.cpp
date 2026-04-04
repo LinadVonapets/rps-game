@@ -19,6 +19,7 @@ Core::Core()
 	user_interface(window)
 {
 	Entity::loadMedia();
+	this->load_media();
 	// this->window.setVerticalSyncEnabled(true);
 	this->spawn_type = Entity::ROCK;
 	this->delta_time = sf::Time::Zero;
@@ -102,6 +103,13 @@ void Core::count_fps()
 	float dt = this->delta_time.asSeconds();
 	if (dt > 0)
 		this->real_fps = 1 / dt;
+}
+
+void Core::load_media()
+{
+	// texture_manager.load(...)
+	// font_manager.load(...)
+	// sound_manager.load(...)
 }
 
 void Core::process_events(const std::optional<sf::Event> p_event)

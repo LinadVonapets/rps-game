@@ -26,6 +26,8 @@ private:
 	//----------------------------------------------------------------//
 
 	TextureManager texture_manager;
+	FontManager font_manager;
+	SoundManager sound_manager;
 
 	EntityGroupSystem entity_group_system;
 	Entity::Type spawn_type;
@@ -58,6 +60,7 @@ public:
 private:
 	void count_dt();
 	void count_fps();
+	void load_media();
 
 	void process_events(const std::optional<sf::Event> p_event);
 
