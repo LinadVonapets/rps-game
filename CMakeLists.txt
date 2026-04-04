@@ -37,12 +37,20 @@ FetchContent_Declare(
 	SYSTEM
 )
 
+FetchContent_Declare(
+    tomlplusplus
+    GIT_REPOSITORY https://github.com/marzer/tomlplusplus.git
+    GIT_TAG v3.4.0
+)
+
 FetchContent_MakeAvailable(SFML)
 FetchContent_MakeAvailable(imgui)
 
 set(IMGUI_DIR ${imgui_SOURCE_DIR})
 set(IMGUI_SFML_FIND_SFML OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(imgui-sfml)
+FetchContent_MakeAvailable(tomlplusplus)
+
 
 
 add_custom_target(copy_assets
@@ -67,6 +75,7 @@ target_link_libraries(
 	SFML::Window
 	SFML::Network
 	ImGui-SFML::ImGui-SFML
+	tomlplusplus::tomlplusplus
 )
 
 target_compile_options(${PROJECT_NAME} PRIVATE $<$<COMPILE_LANG_AND_ID:CXX,GNU,Clang,AppleClang>:-Wall -Wextra -Wpedantic>)
