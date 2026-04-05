@@ -18,7 +18,6 @@ Core::Core()
 	window(sf::VideoMode(window_rect.size), window_title),
 	user_interface(window)
 {
-	Entity::loadMedia();
 	this->load_media();
 	// this->window.setVerticalSyncEnabled(true);
 	this->spawn_type = Entity::ROCK;
@@ -93,6 +92,43 @@ double Core::get_fps(sf::Time refresh_rate)
 	return this->fps;
 }
 
+std::shared_ptr<sf::Texture> Core::get_texture(Entity::Type p_type)
+{
+	std::string id = this->entity_enum_to_str(p_type);
+	return this->texture_manager.get(id);
+}
+
+std::shared_ptr<sf::SoundBuffer> Core::get_sound(Entity::Type p_type)
+{
+	std::string id = this->entity_enum_to_str(p_type);
+	return this->sound_manager.get(id);
+}
+
+std::shared_ptr<sf::Font> Core::get_font(const std::string& p_id)
+{
+	return this->font_manager.get(p_id);
+}
+
+std::string Core::entity_enum_to_str(Entity::Type p_type)
+{
+	std::string type = "lost";
+	switch(p_type)
+	{
+	case Entity::Type::PAPER:
+		type = "paper";
+		break;
+	case Entity::Type::ROCK:
+		type = "rock";
+		break;
+	case Entity::Type::SCISSORS:
+		type = "scissors";
+		break;
+	default:
+		type = "lost";
+	}
+	return type;
+}
+
 void Core::count_dt()
 {
 	this->delta_time = this->delta_clock.restart();
@@ -107,9 +143,31 @@ void Core::count_fps()
 
 void Core::load_media()
 {
-	// texture_manager.load(...)
-	// font_manager.load(...)
-	// sound_manager.load(...)
+	std::filesystem::path image_path[Entity::Type::ALL] =
+	{
+		"assets/images/rock.png",
+		"assets/images/paper.png",
+		"assets/images/scissors.png",
+		"assets/images/lost.png",
+	};
+
+	std::filesystem::path sound_path[Entity::Type::ALL] =
+	{
+		"assets/sounds/rock.wav",
+		"assets/sounds/paper.wav",
+		"assets/sounds/scissors.wav",
+		"assets/sounds/lost.wav"
+	};
+
+	std::cout << sound_path[Entity::Type::ROCK].stem().string() << std::endl;
+
+	for(size_t i = 0; i < Entity::Type::ALL; i++)
+	{
+		texture_manager.load(image_path[i].stem(), image_path[i]);
+		sound_manager.load(sound_path[i].stem(), sound_path[i]);
+	}
+
+	font_manager.load("fixedsys", "assets/fonts/fixedsys.ttf");
 }
 
 void Core::process_events(const std::optional<sf::Event> p_event)

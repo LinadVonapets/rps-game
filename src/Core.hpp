@@ -57,6 +57,12 @@ public:
 
 	double get_fps(sf::Time refresh_rate);
 
+	std::shared_ptr<sf::Texture> get_texture(Entity::Type p_type);
+	std::shared_ptr<sf::SoundBuffer> get_sound(Entity::Type p_type);
+	std::shared_ptr<sf::Font> get_font(const std::string& p_id);
+
+	std::string entity_enum_to_str(Entity::Type p_type);
+
 private:
 	void count_dt();
 	void count_fps();
