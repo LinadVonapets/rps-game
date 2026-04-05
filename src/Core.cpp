@@ -26,14 +26,7 @@ Core::Core()
 
 void Core::run()
 {
-	this->user_interface = std::make_unique<GUI>(window);
-
-	int group_radius = 125;
-
-	entity_group_system.spawn_group(Entity::SCISSORS, 20, {100, 300}, group_radius);
-	entity_group_system.spawn_group(Entity::PAPER, 20, {350, 100}, group_radius);
-	entity_group_system.spawn_group(Entity::ROCK, 20, {700, 400}, group_radius);
-
+	this->setup();
 	while(this->window.isOpen())
 	{
 		this->count_dt();
@@ -189,4 +182,15 @@ void Core::process_events(const std::optional<sf::Event> p_event)
 			);
 		}
 	}
+}
+
+void Core::setup()
+{
+	this->user_interface = std::make_unique<GUI>(window);
+
+	int group_radius = 125;
+
+	entity_group_system.spawn_group(Entity::SCISSORS, 20, {100, 300}, group_radius);
+	entity_group_system.spawn_group(Entity::PAPER, 20, {350, 100}, group_radius);
+	entity_group_system.spawn_group(Entity::ROCK, 20, {700, 400}, group_radius);
 }

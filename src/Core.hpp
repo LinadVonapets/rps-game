@@ -69,6 +69,7 @@ private:
 	void load_media();
 
 	void process_events(const std::optional<sf::Event> p_event);
+	void setup();
 
 	Core(const Core&) = delete;
 	Core& operator=(const Core&) = delete;
