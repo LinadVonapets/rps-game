@@ -10,7 +10,7 @@
 
 GUI::GUI(sf::RenderWindow& window)
 	: window{window}
-	, entity_count(font)
+	, entity_count(*Core::get_instance().get_font("fixedsys"))
 {
 	if(!ImGui::SFML::Init(window))
 	{
@@ -30,11 +30,6 @@ GUI::GUI(sf::RenderWindow& window)
 	this->spawn_area.setOutlineColor(sf::Color(255, 0, 0, 128));
 
 	this->clear_all_entity = false;
-
-	if (!this->font.openFromFile("assets/fonts/fixedsys.ttf"))
-	{
-		std::cerr << "GUI::GUI: Can't load font" << std::endl;
-	}
 
 	this->entity_count.setFillColor(sf::Color::Black);
 	this->entity_count.setCharacterSize(24);

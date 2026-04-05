@@ -22,8 +22,8 @@ private:
 	sf::String window_title;
 	sf::Rect<std::uint32_t> window_rect;
 	sf::RenderWindow window;
-	GUI user_interface;
 	//----------------------------------------------------------------//
+	std::unique_ptr<GUI> user_interface;
 
 	TextureManager texture_manager;
 	FontManager font_manager;

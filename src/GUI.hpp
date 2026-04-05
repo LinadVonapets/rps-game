@@ -27,7 +27,6 @@ class GUI
 
 	Entity::Type choice;
 
-	sf::Font font;
 	sf::Text entity_count;
 
 public:
