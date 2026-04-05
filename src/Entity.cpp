@@ -2,8 +2,8 @@
 #include "Core.hpp"
 
 Entity::Entity(Type type)
-	: m_sprite(*Core::get_instance().get_texture(type))
-	, m_sound(*Core::get_instance().get_sound(type))
+	: m_sprite(*Core::get()->get_texture(type))
+	, m_sound(*Core::get()->get_sound(type))
 {
 	this->entity_group_system = nullptr;
 	this->m_type = type;
@@ -160,8 +160,8 @@ void Entity::check_captured(const Entity& p_other)
 		if(this->loses_to(p_other.m_type))
 		{
 			m_type = p_other.m_type;
-			m_sound.setBuffer(*Core::get_instance().get_sound(m_type));
-			m_sprite.setTexture(*Core::get_instance().get_texture(m_type));
+			m_sound.setBuffer(*Core::get()->get_sound(m_type));
+			m_sprite.setTexture(*Core::get()->get_texture(m_type));
 		}
 
 		if(this->beats(p_other.m_type))

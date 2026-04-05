@@ -10,7 +10,7 @@
 
 GUI::GUI(sf::RenderWindow& window)
 	: window{window}
-	, entity_count(*Core::get_instance().get_font("fixedsys"))
+	, entity_count(*Core::get()->get_font("fixedsys"))
 {
 	if(!ImGui::SFML::Init(window))
 	{
