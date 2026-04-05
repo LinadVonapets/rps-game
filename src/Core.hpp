@@ -18,7 +18,6 @@ private:
 	//----------------------------------------------------------------//
 	// Do not change order of these fields, because we initialize them
 	// in member initializer list exactly in the order they are declared here
-
 	sf::String window_title;
 	sf::Rect<std::uint32_t> window_rect;
 	sf::RenderWindow window;
@@ -69,6 +68,8 @@ private:
 	void load_media();
 
 	void process_events(const std::optional<sf::Event> p_event);
+
+	// Set various thing before main loop starts
 	void setup();
 
 	Core(const Core&) = delete;
