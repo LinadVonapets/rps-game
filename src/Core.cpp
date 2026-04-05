@@ -154,8 +154,8 @@ void Core::load_media()
 
 	for(size_t i = 0; i < Entity::Type::ALL; i++)
 	{
-		texture_manager.load(image_path[i].stem(), image_path[i]);
-		sound_manager.load(sound_path[i].stem(), sound_path[i]);
+		texture_manager.load(image_path[i].stem().string(), image_path[i].string());
+		sound_manager.load(sound_path[i].stem().string(), sound_path[i].string());
 	}
 
 	font_manager.load("fixedsys", "assets/fonts/fixedsys.ttf");
