@@ -29,8 +29,6 @@ private:
 	SoundManager sound_manager;
 
 	EntityGroupSystem entity_group_system;
-	Entity::Type spawn_type;
-
 
 	sf::Clock delta_clock;
 	sf::Time delta_time;

@@ -19,8 +19,6 @@ Core::Core()
 	window(sf::VideoMode(window_rect.size), window_title)
 {
 	this->load_media();
-	// this->window.setVerticalSyncEnabled(true);
-	this->spawn_type = Entity::ROCK;
 	this->delta_time = sf::Time::Zero;
 }
 
