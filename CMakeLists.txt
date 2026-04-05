@@ -46,15 +46,14 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(SFML)
 FetchContent_MakeAvailable(imgui)
 
-set(IMGUI_DIR ${imgui_SOURCE_DIR})
+set(IMGUI_DIR ${imgui_SOURCE_DIR} CACHE PATH "" FORCE)
 set(IMGUI_SFML_FIND_SFML OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(imgui-sfml)
+
 FetchContent_MakeAvailable(tomlplusplus)
 
-
-
 add_custom_target(copy_assets
-	COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_LIST_DIR}/copy-assets.cmake
+	COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_LIST_DIR}/cmake/copy-assets.cmake
 )
 
 add_executable(${PROJECT_NAME}

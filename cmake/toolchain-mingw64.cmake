@@ -21,11 +21,5 @@ set(CMAKE_FIND_ROOT_PATH /usr/${TOOLCHAIN_PREFIX})
 
 # modify default behavior of FIND_XXX() commands
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
-set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
-set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
-
-set(SFML_INCLUDE_DIR "toolchain/SFML-2.5.1-WIN/include")
-include_directories(toolchain/SFML-2.5.1-WIN/include)
-set(SFML_LIBRARY_DIR "toolchain/SFML-2.5.1-WIN/lib")
-link_directories(toolchain/SFML-2.5.1-WIN/lib)
-set(SFML_DIR "toolchain/SFML-2.5.1-WIN/lib/cmake/SFML")
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY BOTH)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE BOTH)
