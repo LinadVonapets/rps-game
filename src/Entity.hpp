@@ -24,9 +24,6 @@ public:
 	};
 
 private:
-	static inline std::array<sf::Texture, Type::ALL> m_texturebuffers;
-	static inline std::array<sf::SoundBuffer, Type::ALL> m_soundbuffers;
-
 	//----------------------------------------------------------------//
 	// Do not change order of these fields, because we initialize them
 	// in member initializer list exactly in the order they are declared here

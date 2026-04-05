@@ -8,6 +8,7 @@
 #include "Entity.hpp"
 #include "EntityGroupSystem.hpp"
 #include "GUI.hpp"
+#include "ResourceManager.hpp"
 
 class Core
 {
@@ -21,12 +22,16 @@ private:
 	sf::String window_title;
 	sf::Rect<std::uint32_t> window_rect;
 	sf::RenderWindow window;
-	GUI user_interface;
 	//----------------------------------------------------------------//
+	std::unique_ptr<GUI> user_interface;
+
+	TextureManager texture_manager;
+	FontManager font_manager;
+	SoundManager sound_manager;
 
 	EntityGroupSystem entity_group_system;
-
 	Entity::Type spawn_type;
+
 
 	sf::Clock delta_clock;
 	sf::Time delta_time;
@@ -52,9 +57,16 @@ public:
 
 	double get_fps(sf::Time refresh_rate);
 
+	std::shared_ptr<sf::Texture> get_texture(Entity::Type p_type);
+	std::shared_ptr<sf::SoundBuffer> get_sound(Entity::Type p_type);
+	std::shared_ptr<sf::Font> get_font(const std::string& p_id);
+
+	std::string entity_enum_to_str(Entity::Type p_type);
+
 private:
 	void count_dt();
 	void count_fps();
+	void load_media();
 
 	void process_events(const std::optional<sf::Event> p_event);
 

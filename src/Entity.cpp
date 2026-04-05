@@ -2,8 +2,8 @@
 #include "Core.hpp"
 
 Entity::Entity(Type type)
-	: m_sprite(m_texturebuffers[type])
-	, m_sound(m_soundbuffers[type])
+	: m_sprite(*Core::get_instance().get_texture(type))
+	, m_sound(*Core::get_instance().get_sound(type))
 {
 	this->entity_group_system = nullptr;
 	this->m_type = type;
@@ -60,35 +60,6 @@ void Entity::setPos(sf::Vector2f pos)
 {
 	this->m_pos = pos;
 	m_sprite.setPosition(pos);
-}
-
-void Entity::loadMedia()
-{
-	std::string image_path[Entity::Type::ALL] =
-	{
-		"assets/images/rock.png",
-		"assets/images/paper.png",
-		"assets/images/scissors.png",
-		"assets/images/lost.png",
-	};
-
-	std::string sound_path[Entity::Type::ALL] =
-	{
-		"assets/sounds/rock.wav",
-		"assets/sounds/paper.wav",
-		"assets/sounds/scissors.wav",
-		"assets/sounds/lost.wav"
-	};
-
-	for(int i = 0; i < Entity::Type::ALL; i++)
-	{
-		if(!m_texturebuffers[Entity::Type(i)].loadFromFile(image_path[i])) {
-			std::cerr << "Failed to load texture: " << "'" << image_path[i] << "'" << std::endl;
-		}
-		if(!m_soundbuffers[Entity::Type(i)].loadFromFile(sound_path[i])) {
-			std::cerr << "Failed to load sound: " << "'" << sound_path[i] << "'" << std::endl;
-		}
-	}
 }
 
 bool Entity::beats(const Entity::Type defender)
@@ -189,8 +160,8 @@ void Entity::check_captured(const Entity& p_other)
 		if(this->loses_to(p_other.m_type))
 		{
 			m_type = p_other.m_type;
-			m_sound.setBuffer(m_soundbuffers[m_type]);
-			m_sprite.setTexture(m_texturebuffers[m_type]);
+			m_sound.setBuffer(*Core::get_instance().get_sound(m_type));
+			m_sprite.setTexture(*Core::get_instance().get_texture(m_type));
 		}
 
 		if(this->beats(p_other.m_type))
