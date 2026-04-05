@@ -1,2 +1,4 @@
 build/
+build/win64/
+build/linux64/
 imgui.ini
