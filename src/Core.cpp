@@ -3,6 +3,8 @@
 #include <imgui.h>
 #include <imgui-SFML.h>
 
+#include <toml++/toml.hpp>
+
 Core* Core::get()
 {
 	if(instance == nullptr)
@@ -138,6 +140,16 @@ void Core::count_fps()
 
 void Core::load_media()
 {
+	std::filesystem::path assets_dir = "assets";
+	std::fstream file(assets_dir / "assets.toml", std::ios::in);
+
+	toml::table tbl = toml::parse(file);
+
+	std::optional<std::string> sounds_dir = tbl["sounds"]["dir"].value<std::string>();
+	std::optional<std::string> images_dir = tbl["images"]["dir"].value<std::string>();
+	std::optional<std::string> fonts_dir = tbl["fonts"]["dir"].value<std::string>();
+
+
 	std::filesystem::path image_path[Entity::Type::ALL] =
 	{
 		"assets/images/rock.png",

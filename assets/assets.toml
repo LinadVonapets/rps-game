@@ -1,0 +1,17 @@
+[sounds]
+dir = "sounds"
+rock = "rock.wav"
+paper = "paper.wav"
+scissors = "scissors.wav"
+unknown = "lost.wav"
+
+[images]
+dir = "images"
+rock = "rock.png"
+paper = "paper.png"
+scissors = "scissors.png"
+unknown = "lost.png"
+
+[fonts]
+dir = "fonts"
+gui = 'fixedsys.ttf'
