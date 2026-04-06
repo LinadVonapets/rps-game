@@ -9,6 +9,8 @@
 #include <functional>
 #include <algorithm>
 
+#include "Collider.hpp"
+
 class EntityGroupSystem;
 
 class Entity: public sf::Drawable
@@ -47,6 +49,8 @@ private:
 	sf::Vector2f hunter_direction;
 	sf::Vector2f victim_direction;
 
+	Collider collider;
+
 public:
 	// Нужен ли конструктор перемещения?
 	explicit Entity(Type type);
@@ -54,7 +58,6 @@ public:
 	void update(sf::Time dt);
 	void setPos(float x, float y);
 	void setPos(sf::Vector2f pos);
-	static void loadMedia();
 
 private:
 	bool beats(const Type defender);
@@ -63,7 +66,6 @@ private:
 	void set_id(size_t p_id);
 	void set_entity_group_system(EntityGroupSystem* p_entity_group_system);
 
-	bool collide(const Entity& p_other) const;
 	void collisions_with_walls(char direct);
 
 	void move(sf::Time dt);

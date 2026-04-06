@@ -12,6 +12,9 @@ Entity::Entity(Type type)
 	this->victim_min_dist = std::numeric_limits<float>::max();
 
 	m_sprite.setScale(sf::Vector2f(0.2, 0.2));
+	m_sprite.setOrigin(m_sprite.getLocalBounds().getCenter());
+
+	collider.set_size(m_sprite.getGlobalBounds().size);
 }
 
 Entity::Entity(const Entity& p_other)
@@ -30,6 +33,8 @@ Entity::Entity(const Entity& p_other)
 	this->victim_min_dist = p_other.victim_min_dist;
 	this->hunter_direction = p_other.hunter_direction;
 	this->victim_direction = p_other.victim_direction;
+
+	this->collider = p_other.collider;
 }
 
 void Entity::update(sf::Time dt)
@@ -52,14 +57,14 @@ void Entity::update(sf::Time dt)
 
 void Entity::setPos(float x, float y)
 {
-	this->m_pos = {x, y};
-	m_sprite.setPosition({x, y});
+	this->setPos({x,y});
 }
 
 void Entity::setPos(sf::Vector2f pos)
 {
 	this->m_pos = pos;
 	m_sprite.setPosition(pos);
+	collider.set_pos(pos);
 }
 
 bool Entity::beats(const Entity::Type defender)
@@ -114,13 +119,6 @@ void Entity::set_entity_group_system(EntityGroupSystem* p_entity_group_system)
 		this->entity_group_system = p_entity_group_system;
 }
 
-bool Entity::collide(const Entity& p_other) const
-{
-	sf::FloatRect our_rect = this->m_sprite.getGlobalBounds();
-	sf::FloatRect other_rect = p_other.m_sprite.getGlobalBounds();
-	return our_rect.findIntersection(other_rect).has_value();
-}
-
 void Entity::collisions_with_walls(char direct)
 {
 	sf::Rect<std::uint32_t> win_rect = Core::get()->get_window_rect();
@@ -131,6 +129,7 @@ void Entity::collisions_with_walls(char direct)
 		if (m_pos.x < win_rect.position.x)
 			m_pos.x = win_rect.position.x;
 	}
+
 	if(direct == 'h')
 	{
 		if (m_pos.y + m_sprite.getGlobalBounds().size.y > win_rect.size.y)
@@ -150,12 +149,12 @@ void Entity::move(sf::Time dt)
 	collisions_with_walls('w');
 	m_pos.y += m_direction.y * m_speed * dt.asSeconds();
 	collisions_with_walls('h');
-	m_sprite.setPosition(m_pos);
+	this->setPos(m_pos);
 }
 
 void Entity::check_captured(const Entity& p_other)
 {
-	if(collide(p_other))
+	if(collider.collide(p_other.collider))
 	{
 		if(this->loses_to(p_other.m_type))
 		{
@@ -225,4 +224,5 @@ void Entity::reset_direction_search()
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(m_sprite, states);
+	target.draw(collider, states);
 }

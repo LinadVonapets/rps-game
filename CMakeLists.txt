@@ -63,6 +63,7 @@ add_executable(${PROJECT_NAME}
 	src/Core.cpp
 	src/GUI.cpp
 	src/ResourceManager.cpp
+	src/Collider.cpp
 )
 
 target_link_libraries(
