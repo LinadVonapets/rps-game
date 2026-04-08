@@ -12,7 +12,6 @@ Entity::Entity(Type type)
 	this->victim_min_dist = std::numeric_limits<float>::max();
 
 	m_sprite.setScale(sf::Vector2f(0.2, 0.2));
-	m_sprite.setOrigin(m_sprite.getLocalBounds().getCenter());
 
 	collider.set_size(m_sprite.getGlobalBounds().size);
 }
@@ -119,24 +118,19 @@ void Entity::set_entity_group_system(EntityGroupSystem* p_entity_group_system)
 		this->entity_group_system = p_entity_group_system;
 }
 
-void Entity::collisions_with_walls(char direct)
+void Entity::collisions_with_walls()
 {
 	sf::Rect<std::uint32_t> win_rect = Core::get()->get_window_rect();
-	if (direct == 'w')
-	{
-		if (m_pos.x + m_sprite.getGlobalBounds().size.x > win_rect.size.x)
-			m_pos.x = win_rect.size.x - m_sprite.getGlobalBounds().size.x;
-		if (m_pos.x < win_rect.position.x)
-			m_pos.x = win_rect.position.x;
-	}
 
-	if(direct == 'h')
-	{
-		if (m_pos.y + m_sprite.getGlobalBounds().size.y > win_rect.size.y)
-			m_pos.y = win_rect.size.y - m_sprite.getGlobalBounds().size.y;
-		if (m_pos.y < win_rect.position.y)
-			m_pos.y = win_rect.position.y;
-	}
+	if (m_pos.x + m_sprite.getGlobalBounds().size.x > win_rect.size.x)
+		m_pos.x = win_rect.size.x - m_sprite.getGlobalBounds().size.x;
+	else if (m_pos.x < win_rect.position.x)
+		m_pos.x = win_rect.position.x;
+
+	if (m_pos.y + m_sprite.getGlobalBounds().size.y > win_rect.size.y)
+		m_pos.y = win_rect.size.y - m_sprite.getGlobalBounds().size.y;
+	else if (m_pos.y < win_rect.position.y)
+		m_pos.y = win_rect.position.y;
 }
 
 void Entity::move(sf::Time dt)
@@ -146,9 +140,8 @@ void Entity::move(sf::Time dt)
 		m_direction = m_direction.normalized();
 
 	m_pos.x += m_direction.x * m_speed * dt.asSeconds();
-	collisions_with_walls('w');
 	m_pos.y += m_direction.y * m_speed * dt.asSeconds();
-	collisions_with_walls('h');
+	this->collisions_with_walls();
 	this->setPos(m_pos);
 }
 

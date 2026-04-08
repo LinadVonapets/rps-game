@@ -66,7 +66,7 @@ private:
 	void set_id(size_t p_id);
 	void set_entity_group_system(EntityGroupSystem* p_entity_group_system);
 
-	void collisions_with_walls(char direct);
+	void collisions_with_walls();
 
 	void move(sf::Time dt);
 	void check_captured(const Entity& p_other);
