@@ -20,18 +20,18 @@ bool Collider::collide(const Collider& p_collider)
 
 sf::Vector2f Collider::clamp_to_screen(const sf::Vector2f& p_pos)
 {
-	sf::Vector2f position = p_pos;
-	sf::Rect<std::uint32_t> win_rect = Core::get()->get_window_rect();
+	sf::Rect<std::uint32_t> screen = Core::get()->get_window_rect();
 
-	if (position.x + shape.getGlobalBounds().size.x > win_rect.size.x)
-		position.x = win_rect.size.x - shape.getGlobalBounds().size.x;
-	else if (position.x < win_rect.position.x)
-		position.x = win_rect.position.x;
+	float screen_left = screen.position.x;
+	float screen_right = screen.size.x - shape.getGlobalBounds().size.x;
 
-	if (position.y + shape.getGlobalBounds().size.y > win_rect.size.y)
-		position.y = win_rect.size.y - shape.getGlobalBounds().size.y;
-	else if (position.y < win_rect.position.y)
-		position.y = win_rect.position.y;
+	float screen_top = screen.position.y;
+	float screen_bottom = screen.size.y - shape.getGlobalBounds().size.y;
+
+	sf::Vector2f position = sf::Vector2f(
+		std::clamp(p_pos.x, screen_left, screen_right),
+		std::clamp(p_pos.y, screen_top, screen_bottom)
+	);
 
 	return position;
 }
