@@ -5,7 +5,6 @@ Collider::Collider()
 	shape.setFillColor(sf::Color::Transparent);
 	shape.setOutlineColor(sf::Color::Red);
 	shape.setOutlineThickness(1.f);
-	shape.setOrigin(shape.getLocalBounds().getCenter());
 	center_dot.setRadius(1.f);
 	center_dot.setFillColor(sf::Color::Red);
 }
@@ -20,17 +19,16 @@ bool Collider::collide(const Collider& p_collider)
 void Collider::set_size(sf::Vector2f p_size)
 {
 	shape.setSize(p_size);
-	shape.setOrigin(shape.getLocalBounds().getCenter());
 }
 
 void Collider::set_pos(sf::Vector2f p_pos)
 {
-	if(this->show)
-		center_dot.setPosition(p_pos);
-
 	// We need set pos for shape even if it not shown
 	// because we use this shape to detect collisions
 	shape.setPosition(p_pos);
+
+	if(this->show)
+		center_dot.setPosition(p_pos + shape.getLocalBounds().getCenter());
 }
 
 void Collider::set_show(bool p_state)
