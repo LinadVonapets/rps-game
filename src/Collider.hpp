@@ -15,6 +15,7 @@ class Collider : public sf::Drawable
 public:
 	Collider();
 	bool collide(const Collider& p_collider);
+	sf::Vector2f clamp_to_screen(const sf::Vector2f& p_pos);
 	void set_size(sf::Vector2f p_size);
 	void set_pos(sf::Vector2f p_pos);
 

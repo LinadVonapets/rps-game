@@ -1,5 +1,7 @@
 #include "Collider.hpp"
 
+#include "Core.hpp"
+
 Collider::Collider()
 {
 	shape.setFillColor(sf::Color::Transparent);
@@ -14,6 +16,24 @@ bool Collider::collide(const Collider& p_collider)
 	sf::FloatRect our_rect = this->shape.getGlobalBounds();
 	sf::FloatRect other_rect = p_collider.shape.getGlobalBounds();
 	return our_rect.findIntersection(other_rect).has_value();
+}
+
+sf::Vector2f Collider::clamp_to_screen(const sf::Vector2f& p_pos)
+{
+	sf::Vector2f position = p_pos;
+	sf::Rect<std::uint32_t> win_rect = Core::get()->get_window_rect();
+
+	if (position.x + shape.getGlobalBounds().size.x > win_rect.size.x)
+		position.x = win_rect.size.x - shape.getGlobalBounds().size.x;
+	else if (position.x < win_rect.position.x)
+		position.x = win_rect.position.x;
+
+	if (position.y + shape.getGlobalBounds().size.y > win_rect.size.y)
+		position.y = win_rect.size.y - shape.getGlobalBounds().size.y;
+	else if (position.y < win_rect.position.y)
+		position.y = win_rect.position.y;
+
+	return position;
 }
 
 void Collider::set_size(sf::Vector2f p_size)
