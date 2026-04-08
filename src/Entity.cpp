@@ -54,16 +54,21 @@ void Entity::update(sf::Time dt)
 	this->move(dt);
 }
 
-void Entity::setPos(float x, float y)
+void Entity::set_position(float p_x, float p_y)
 {
-	this->setPos({x,y});
+	this->set_position({p_x, p_y});
 }
 
-void Entity::setPos(sf::Vector2f pos)
+void Entity::set_position(sf::Vector2f p_pos)
 {
-	this->m_pos = pos;
-	m_sprite.setPosition(pos);
-	collider.set_pos(pos);
+	this->m_pos = p_pos;
+	m_sprite.setPosition(this->m_pos);
+	collider.set_pos(this->m_pos);
+}
+
+sf::Vector2f Entity::get_position()
+{
+	return this->m_pos;
 }
 
 bool Entity::beats(const Entity::Type defender)
@@ -120,14 +125,16 @@ void Entity::set_entity_group_system(EntityGroupSystem* p_entity_group_system)
 
 void Entity::move(sf::Time dt)
 {
-	m_pos = m_sprite.getPosition();
+	sf::Vector2f position = this->get_position();
+
 	if (m_direction.lengthSquared() != 0)
 		m_direction = m_direction.normalized();
 
-	m_pos.x += m_direction.x * m_speed * dt.asSeconds();
-	m_pos.y += m_direction.y * m_speed * dt.asSeconds();
-	m_pos = collider.clamp_to_screen(m_pos);
-	this->setPos(m_pos);
+	position.x += m_direction.x * m_speed * dt.asSeconds();
+	position.y += m_direction.y * m_speed * dt.asSeconds();
+
+	position = collider.clamp_to_screen(position);
+	this->set_position(position);
 }
 
 void Entity::check_captured(const Entity& p_other)
@@ -158,7 +165,7 @@ void Entity::update_direction()
 	if (hunter_min_dist_dir.lengthSquared() != 0)
 		this->hunter_direction = hunter_min_dist_dir.normalized();
 
-	this->m_direction = this->victim_direction - hunter_direction;
+	this->m_direction = this->victim_direction - this->hunter_direction;
 }
 
 void Entity::do_direction_search(const Entity& p_other)

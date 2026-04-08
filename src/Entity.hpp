@@ -56,8 +56,9 @@ public:
 	explicit Entity(Type type);
 	Entity(const Entity& p_other);
 	void update(sf::Time dt);
-	void setPos(float x, float y);
-	void setPos(sf::Vector2f pos);
+	void set_position(float p_x, float p_y);
+	void set_position(sf::Vector2f p_pos);
+	sf::Vector2f get_position();
 
 private:
 	bool beats(const Type defender);

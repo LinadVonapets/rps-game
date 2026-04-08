@@ -17,7 +17,7 @@ void EntityGroupSystem::spawn_group(Entity::Type p_type, int p_amount, sf::Vecto
 
 	for(int i = 0; i < p_amount; ++i) {
 		Entity temp(p_type);
-		temp.setPos(this->get_randomized_coord(p_pos.x, p_pos.y, p_radius));
+		temp.set_position(this->get_randomized_coord(p_pos.x, p_pos.y, p_radius));
 		this->add_entity(std::move(temp));
 	}
 }
