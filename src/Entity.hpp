@@ -54,7 +54,6 @@ public:
 	void update(sf::Time dt);
 	void setPos(float x, float y);
 	void setPos(sf::Vector2f pos);
-	static void loadMedia();
 
 private:
 	bool beats(const Type defender);
@@ -64,7 +63,7 @@ private:
 	void set_entity_group_system(EntityGroupSystem* p_entity_group_system);
 
 	bool collide(const Entity& p_other) const;
-	void collisions_with_walls(char direct);
+	void collisions_with_walls();
 
 	void move(sf::Time dt);
 	void check_captured(const Entity& p_other);
