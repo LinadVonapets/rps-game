@@ -71,19 +71,19 @@ sf::Vector2f Entity::get_position()
 	return this->m_pos;
 }
 
-bool Entity::beats(const Entity::Type defender)
+bool Entity::beats(const Entity& p_defender) const
 {
 	bool ret = false;
 	switch(this->m_type)
 	{
 	case Entity::ROCK:
-		ret = (defender == Entity::SCISSORS);
+		ret = (p_defender.m_type == Entity::SCISSORS);
 		break;
 	case Entity::SCISSORS:
-		ret = (defender == Entity::PAPER);
+		ret = (p_defender.m_type == Entity::PAPER);
 		break;
 	case Entity::PAPER:
-		ret = (defender == Entity::ROCK);
+		ret = (p_defender.m_type == Entity::ROCK);
 		break;
 	default:
 		break;
@@ -91,19 +91,19 @@ bool Entity::beats(const Entity::Type defender)
 	return ret;
 }
 
-bool Entity::loses_to(const Entity::Type attacker)
+bool Entity::loses_to(const Entity& p_attacker) const
 {
 	bool ret = false;
 	switch(this->m_type)
 	{
 	case Entity::ROCK:
-		ret = (attacker == Entity::PAPER);
+		ret = (p_attacker.m_type == Entity::PAPER);
 		break;
 	case Entity::PAPER:
-		ret = (attacker == Entity::SCISSORS);
+		ret = (p_attacker.m_type == Entity::SCISSORS);
 		break;
 	case Entity::SCISSORS:
-		ret = (attacker == Entity::ROCK);
+		ret = (p_attacker.m_type == Entity::ROCK);
 		break;
 	default:
 		break;
@@ -141,14 +141,14 @@ void Entity::check_captured(const Entity& p_other)
 {
 	if(collider.collide(p_other.collider))
 	{
-		if(this->loses_to(p_other.m_type))
+		if(this->loses_to(p_other))
 		{
 			m_type = p_other.m_type;
 			m_sound.setBuffer(*Core::get()->get_sound(m_type));
 			m_sprite.setTexture(*Core::get()->get_texture(m_type));
 		}
 
-		if(this->beats(p_other.m_type))
+		if(this->beats(p_other))
 		{
 			m_sound.play();
 		}
@@ -180,7 +180,7 @@ void Entity::do_direction_search(const Entity& p_other)
 		direction = difference;
 
 
-	if (this->loses_to(p_other.m_type))
+	if (this->loses_to(p_other))
 	{
 		if (this->hunter_min_dist > distance)
 		{
@@ -188,7 +188,7 @@ void Entity::do_direction_search(const Entity& p_other)
 			this->hunter_min_dist_dir = direction;
 		}
 	}
-	else if(this->beats(p_other.m_type))
+	else if(this->beats(p_other))
 	{
 		if (this->victim_min_dist > distance)
 		{

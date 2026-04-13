@@ -61,8 +61,8 @@ public:
 	sf::Vector2f get_position();
 
 private:
-	bool beats(const Type defender);
-	bool loses_to(const Type attacker);
+	bool beats(const Entity& p_defender) const;
+	bool loses_to(const Entity& p_attacker) const;
 
 	void set_id(size_t p_id);
 	void set_entity_group_system(EntityGroupSystem* p_entity_group_system);
