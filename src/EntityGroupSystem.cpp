@@ -1,5 +1,7 @@
 #include "EntityGroupSystem.hpp"
 
+#include <numbers>
+
 #include "Core.hpp"
 
 EntityGroupSystem::EntityGroupSystem()
