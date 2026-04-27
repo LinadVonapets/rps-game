@@ -45,10 +45,7 @@ size_t EntityGroupSystem::get_next_id() const
 
 sf::Vector2f EntityGroupSystem::get_randomized_coord(float p_x, float p_y, float p_max_radius)
 {
-	// acos(-1) used here to generate PI constant with double precision
-	double Pi = std::acos(-1);
-
-	double angle = this->get_random(0.f, 2*Pi);
+	double angle = this->get_random(0.f, 2 * std::numbers::pi);
 	int radius = this->get_random(0, p_max_radius);
 
 	float x_offseted = std::cos(angle) * radius + p_x;
