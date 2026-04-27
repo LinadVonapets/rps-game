@@ -51,6 +51,8 @@ private:
 
 	Collider collider;
 
+	size_t grid_cell_index = 0;
+
 public:
 	// Нужен ли конструктор перемещения?
 	explicit Entity(Type type);
@@ -58,7 +60,7 @@ public:
 	void update(sf::Time dt);
 	void set_position(float p_x, float p_y);
 	void set_position(sf::Vector2f p_pos);
-	sf::Vector2f get_position();
+	sf::Vector2f get_position() const;
 
 private:
 	bool beats(const Entity& p_defender) const;
@@ -66,6 +68,8 @@ private:
 
 	void set_id(size_t p_id);
 	void set_entity_group_system(EntityGroupSystem* p_entity_group_system);
+	void set_grid_cell_index(size_t p_index);
+	size_t get_grid_cell_index() const;
 
 	void move(sf::Time dt);
 	void check_captured(const Entity& p_other);

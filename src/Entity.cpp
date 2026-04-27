@@ -32,6 +32,7 @@ Entity::Entity(const Entity& p_other)
 	this->victim_min_dist = p_other.victim_min_dist;
 	this->hunter_direction = p_other.hunter_direction;
 	this->victim_direction = p_other.victim_direction;
+	this->grid_cell_index = p_other.grid_cell_index;
 
 	this->collider = p_other.collider;
 }
@@ -40,15 +41,14 @@ void Entity::update(sf::Time dt)
 {
 	this->reset_direction_search();
 
-	for (size_t i = 0; i < entity_group_system->get_next_id(); i++)
+	for (const auto& id : entity_group_system->grid[grid_cell_index])
 	{
-		auto entity = entity_group_system->get_entity_by_id(i);
+		auto entity = entity_group_system->get_entity_by_id(id);
 		if (!entity.has_value() || m_id == entity->get().m_id)
 			continue;
 
 		this->check_captured(entity->get());
 		this->do_direction_search(entity->get());
-
 	}
 	this->update_direction();
 	this->move(dt);
@@ -66,7 +66,7 @@ void Entity::set_position(sf::Vector2f p_pos)
 	collider.set_pos(this->m_pos);
 }
 
-sf::Vector2f Entity::get_position()
+sf::Vector2f Entity::get_position() const
 {
 	return this->m_pos;
 }
@@ -121,6 +121,16 @@ void Entity::set_entity_group_system(EntityGroupSystem* p_entity_group_system)
 {
 	if(this->entity_group_system != p_entity_group_system)
 		this->entity_group_system = p_entity_group_system;
+}
+
+void Entity::set_grid_cell_index(size_t p_index)
+{
+	this->grid_cell_index = p_index;
+}
+
+size_t Entity::get_grid_cell_index() const
+{
+	return this->grid_cell_index;
 }
 
 void Entity::move(sf::Time dt)

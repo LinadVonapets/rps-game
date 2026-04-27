@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <cstdint>
 #include <random>
+#include <unordered_map>
+#include <unordered_set>
 
 #include "Entity.hpp"
 
@@ -17,7 +19,6 @@ private:
 
 	std::vector<Entity> entities;
 
-
 public:
 	EntityGroupSystem();
 	void spawn_group(Entity::Type p_type, int p_amount, sf::Vector2f p_pos, float p_radius);
@@ -29,6 +30,11 @@ public:
 	sf::Vector2f get_randomized_coord(float p_x, float p_y, float p_max_radius);
 	double get_random(double p_from, double p_to);
 	void update(sf::Time p_dt);
+
+	short grid_cell_width = 200;
+	std::unordered_map<size_t, std::unordered_set<size_t>> grid;
+
+	size_t calculate_cell_index(const Entity& p_entity);
 
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

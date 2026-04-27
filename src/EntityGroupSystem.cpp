@@ -30,6 +30,8 @@ size_t EntityGroupSystem::add_entity(Entity&& p_entity)
 	p_entity.set_id(new_id);
 	p_entity.set_entity_group_system(this);
 	entities.push_back(p_entity);
+	p_entity.set_grid_cell_index(this->calculate_cell_index(p_entity));
+	grid[p_entity.get_grid_cell_index()].insert(p_entity.m_id);
 	return new_id;
 }
 
@@ -70,7 +72,24 @@ void EntityGroupSystem::update(sf::Time p_dt)
 		Core::get()->get_user_interface().clear_all_entity = false;
 	}
 	for(Entity& entity: this->entities)
+	{
+		size_t new_index = this->calculate_cell_index(entity);
+		size_t current_index = entity.get_grid_cell_index();
+
+		if (new_index != current_index)
+		{
+			grid[current_index].erase(entity.m_id);
+			entity.set_grid_cell_index(new_index);
+			grid[new_index].insert(entity.m_id);
+		}
 		entity.update(p_dt);
+	}
+}
+
+size_t EntityGroupSystem::calculate_cell_index(const Entity& p_entity)
+{
+	sf::Vector2i cell_coordinates = sf::Vector2i(p_entity.get_position()) / static_cast<int>(this->grid_cell_width);
+	return (static_cast<size_t>(cell_coordinates.x) << 32) | static_cast<size_t>(cell_coordinates.y);
 }
 
 void EntityGroupSystem::draw(sf::RenderTarget& target, sf::RenderStates states) const
